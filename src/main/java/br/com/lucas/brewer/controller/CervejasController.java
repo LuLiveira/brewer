@@ -13,7 +13,7 @@ import br.com.lucas.brewer.model.Cerveja;
 
 @Controller
 public class CervejasController {
-
+	
 	@RequestMapping("/cervejas/cadastro")
 	public String novo(Cerveja cerveja) {
 		return "cerveja/cadastro-cerveja";
