@@ -1,0 +1,28 @@
+{
+  "name": "brewergulp",
+  "version": "1.0.0",
+  "description": "Cervejaria Brewer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuLiveira/brewer.git"
+  },
+  "author": "Lucas Oliveira",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LuLiveira/brewer/issues"
+  },
+  "homepage": "https://github.com/LuLiveira/brewer#readme",
+  "devDependencies": {
+    "gulp-concat": "^2.6.1",
+    "gulp-sass": "^4.1.0",
+    "gulp-uglify": "^3.0.2",
+    "node-sass": "^4.14.1"
+  },
+  "dependencies": {
+    "gulp": "^4.0.2"
+  }
+}

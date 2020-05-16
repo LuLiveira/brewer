@@ -16,7 +16,7 @@ public class CervejasController {
 
 	@RequestMapping("/cervejas/cadastro")
 	public String novo(Cerveja cerveja) {
-		return "cerveja/CadastroCerveja";
+		return "cerveja/cadastro-cerveja";
 	}
 
 	@RequestMapping(value = "/cervejas/cadastro", method = RequestMethod.POST)

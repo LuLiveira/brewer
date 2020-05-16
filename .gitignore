@@ -41,3 +41,11 @@ out
 test-output
 atlassian-ide-plugin.xml
 .gradletasknamecache
+
+#Others
+node_modules/
+.vscode
+.settings
+package-lock.json
+src/main/resources/static/layout/javascripts/brewer.js
+src/main/resources/static/layout/stylesheets/brewer.css
