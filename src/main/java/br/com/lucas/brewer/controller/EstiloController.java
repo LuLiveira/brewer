@@ -12,10 +12,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.lucas.brewer.model.Estilo;
 import br.com.lucas.brewer.service.EstiloService;
+import br.com.lucas.brewer.service.exception.NomeEstiloJaCadastradoExcetion;
 
 @Controller
 public class EstiloController {
-	
+
 	@Autowired
 	private EstiloService estiloService;
 
@@ -24,16 +25,19 @@ public class EstiloController {
 		ModelAndView mv = new ModelAndView("cerveja/estilo/cadastro-estilo");
 		return mv;
 	}
-	
-	@RequestMapping(value = "/estilos/cadastro", method = RequestMethod.POST)
-	public ModelAndView cadastrar(@Valid Estilo estilo, BindingResult result,
-			RedirectAttributes attributes) {
 
-		if (result.hasErrors()) {
+	@RequestMapping(value = "/estilos/cadastro", method = RequestMethod.POST)
+	public ModelAndView cadastrar(@Valid Estilo estilo, BindingResult result, RedirectAttributes attributes) {
+
+		if (result.hasErrors())
+			return novo(estilo);
+
+		try {
+			this.estiloService.salvar(estilo);
+		} catch (NomeEstiloJaCadastradoExcetion e) {
+			result.rejectValue("nome", e.getMessage(), e.getMessage());
 			return novo(estilo);
 		}
-		
-		this.estiloService.salvar(estilo);
 
 		attributes.addFlashAttribute("mensagem", "Estilo cadastrado com sucesso! ");
 		return new ModelAndView("redirect:/estilos/cadastro");

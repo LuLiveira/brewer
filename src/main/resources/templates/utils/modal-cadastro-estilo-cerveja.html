@@ -1,5 +1,5 @@
 <div class="modal fade" id="modal-cadastro-rapido-estilo" role="dialog">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog modal-md">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">
@@ -10,15 +10,17 @@
         <h4 class="modal-title">Cadastro de estilo</h4>
       </div>
       <div class="modal-body">
-        <form class="form-horizontal">
+      	<div class="alert alert-danger hidden js-mensagem-cadastro-rapido-estilo" role="alert">
+      	</div>
+        <form class="form-horizontal" th:action="@{/cervejas/cadastro/estilo}">
         	<div class="form-group">
-        		<label class="col-sm-2 control-label" for="nome-estilo">Nome</label>
+        		<label class="col-sm-2 control-label" for="nome-estilo">Nome*</label>
         		<div class="col-sm-10">
-        			<input id="nome-estilo" type="text" class="form-control" autofocus/>
+        			<input id="nome-estilo" type="text" class="form-control" autofocus="autofocus"/>
         		</div>
         	</div>
         </form>
-        <button type="button" class="btn btn-primary">Salvar</button>
+        <button type="button" class="btn btn-primary js-modal-cadastro-estilo-btn-salvar">Salvar</button>
         <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
       </div>
     </div>

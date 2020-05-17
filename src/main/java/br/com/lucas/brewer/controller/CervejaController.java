@@ -1,22 +1,27 @@
 package br.com.lucas.brewer.controller;
 
+import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.web.bind.annotation.RequestMethod.POST;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.lucas.brewer.model.Cerveja;
+import br.com.lucas.brewer.model.Estilo;
 import br.com.lucas.brewer.model.enums.Origem;
 import br.com.lucas.brewer.model.enums.Sabor;
-import br.com.lucas.brewer.repository.CervejaRepository;
 import br.com.lucas.brewer.repository.EstiloRepository;
 import br.com.lucas.brewer.service.CervejaService;
+import br.com.lucas.brewer.service.exception.NomeEstiloJaCadastradoExcetion;
 
 /**
  * 
@@ -25,11 +30,11 @@ import br.com.lucas.brewer.service.CervejaService;
  */
 
 @Controller
-public class CervejasController {
+public class CervejaController {
 
 	@Autowired
 	private EstiloRepository estiloRepository;
-	
+
 	@Autowired
 	private CervejaService cervejaService;
 
@@ -40,18 +45,33 @@ public class CervejasController {
 		return mv;
 	}
 
-	@RequestMapping(value = "/cervejas/cadastro", method = RequestMethod.POST)
-	public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result,
-			RedirectAttributes attributes) {
+	@RequestMapping(value = "/cervejas/cadastro", method = POST)
+	public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, RedirectAttributes attributes) {
 
 		if (result.hasErrors()) {
 			return novo(cerveja);
 		}
-		
+
 		this.cervejaService.salvar(cerveja);
 
 		attributes.addFlashAttribute("mensagem", "Cerveja cadastrada com sucesso! ");
 		return new ModelAndView("redirect:/cervejas/cadastro");
+	}
+
+	@RequestMapping(value = "/cervejas/cadastro/estilo", method = POST, consumes = {
+			APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> cadastrarEstilo(@RequestBody @Valid Estilo estilo, BindingResult result) {
+
+		if (result.hasErrors())
+			return ResponseEntity.badRequest().body(result.getFieldError("nome").getDefaultMessage());
+
+		try {
+			estilo = this.cervejaService.salvar(estilo);
+		} catch (NomeEstiloJaCadastradoExcetion e) {
+			return ResponseEntity.badRequest().body(e.getMessage());
+		}
+
+		return ResponseEntity.ok(estilo);
 	}
 
 	private void getValuesForSelect(ModelAndView mv) {
