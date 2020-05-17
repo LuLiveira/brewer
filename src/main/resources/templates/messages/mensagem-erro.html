@@ -2,7 +2,7 @@
 	<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 	<th:block th:each="erro : ${#fields.detailedErrors()}">
 		<div>
-			<i class="fa  fa-exclamation-circle"></i>&nbsp;[[ ${erro.message}]].
+			<i class="fa  fa-exclamation-circle"></i>&nbsp;[[ ${erro.message}]]
 		</div>
 	</th:block>
 </div>

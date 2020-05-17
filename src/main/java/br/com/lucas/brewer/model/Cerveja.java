@@ -14,10 +14,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import br.com.lucas.brewer.model.enums.Origem;
 import br.com.lucas.brewer.model.enums.Sabor;
+import br.com.lucas.brewer.utils.validation.SKUValidation;
 
 @Entity
 @Table(name = "cerveja")
@@ -28,13 +30,14 @@ public class Cerveja implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@SKUValidation
 	@NotBlank(message = "SKU é obrigatório")
 	private String sku;
 
 	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 
-	@Size(min = 1, max = 50, message = "Descrição deve conter até 50 caracteres")
+	@Size(max = 50, message = "Descrição deve conter até 50 caracteres")
 	private String descricao;
 //	private String foto;
 	private BigDecimal valor;
