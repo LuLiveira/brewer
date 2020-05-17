@@ -14,13 +14,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import br.com.lucas.brewer.model.Cerveja;
 import br.com.lucas.brewer.model.enums.Origem;
 import br.com.lucas.brewer.model.enums.Sabor;
+import br.com.lucas.brewer.repository.CervejaRepository;
 import br.com.lucas.brewer.repository.EstiloRepository;
+import br.com.lucas.brewer.service.CervejaService;
+
+/**
+ * 
+ * @author Lucas Oliveira
+ *
+ */
 
 @Controller
 public class CervejasController {
 
 	@Autowired
 	private EstiloRepository estiloRepository;
+	
+	@Autowired
+	private CervejaService cervejaService;
 
 	@RequestMapping("/cervejas/cadastro")
 	public ModelAndView novo(Cerveja cerveja) {
@@ -36,6 +47,8 @@ public class CervejasController {
 		if (result.hasErrors()) {
 			return novo(cerveja);
 		}
+		
+		this.cervejaService.salvar(cerveja);
 
 		attributes.addFlashAttribute("mensagem", "Cerveja cadastrada com sucesso! ");
 		return new ModelAndView("redirect:/cervejas/cadastro");
