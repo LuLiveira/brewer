@@ -7,15 +7,15 @@
         </Console>
     </Appenders>
     <Loggers>
-    	<Logger name="br.com.lucas.brewer.controller" additivity="false" level="all">
+    	<Logger name="br.com.lucas.brewer.controller" level="debug">
             <AppenderRef ref="Console"/>
         </Logger>
         
-        <Logger name="org.hibernate.SQL" additivity="false" level="all">
+        <Logger name="org.hibernate" level="debug">
             <AppenderRef ref="Console"/>
         </Logger>
     
-        <Root level="all" additivity="false">
+        <Root level="debug" additivity="false">
             <AppenderRef ref="console" />
         </Root>
     </Loggers>
