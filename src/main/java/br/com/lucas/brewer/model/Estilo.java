@@ -15,25 +15,29 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "estilo")
 public class Estilo implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@NotBlank(message = "Nome é obrigatório.")
 	private String nome;
-	
+
 	@OneToMany(mappedBy = "estilo")
 	private List<Cerveja> cerveja;
+
+	public Long getId() {
+		return id;
+	}
 
 	public String getNome() {
 		return nome;
 	}
-	
+
 	public List<Cerveja> getCerveja() {
 		return cerveja;
 	}
-	
+
 	public void setCerveja(List<Cerveja> cerveja) {
 		this.cerveja = cerveja;
 	}
@@ -66,5 +70,4 @@ public class Estilo implements Serializable {
 			return false;
 		return true;
 	}
-
 }
