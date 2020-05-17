@@ -20,6 +20,12 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 import br.com.lucas.brewer.controller.CervejasController;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
+/**
+ * 
+ * @author Lucas Oliveira
+ *
+ */
+
 @Configuration
 @ComponentScan(basePackageClasses = { CervejasController.class })
 @EnableWebMvc
