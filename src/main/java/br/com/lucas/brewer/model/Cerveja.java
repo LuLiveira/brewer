@@ -28,14 +28,13 @@ public class Cerveja implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "SKU é obrigatório.")
+	@NotBlank(message = "SKU é obrigatório")
 	private String sku;
 
-	@NotBlank(message = "Nome é obrigatório.")
+	@NotBlank(message = "Nome é obrigatório")
 	private String nome;
 
-	@NotBlank
-	@Size(max = 50, message = "Descrição deve conter até 50 caracteres.")
+	@Size(min = 1, max = 50, message = "Descrição deve conter até 50 caracteres")
 	private String descricao;
 //	private String foto;
 	private BigDecimal valor;
