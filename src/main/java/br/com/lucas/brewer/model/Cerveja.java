@@ -1,20 +1,24 @@
 package br.com.lucas.brewer.model;
 
+import static javax.persistence.EnumType.STRING;
+import static javax.persistence.GenerationType.IDENTITY;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import br.com.lucas.brewer.model.enums.Origem;
@@ -27,38 +31,53 @@ public class Cerveja implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
 
 	@SKUValidation
-	@NotBlank(message = "SKU é obrigatório")
+	@NotBlank(message = "O SKU é obrigatório")
 	private String sku;
 
-	@NotBlank(message = "Nome é obrigatório")
+	@NotBlank(message = "O nome é obrigatório")
 	private String nome;
 
 	@Size(max = 50, message = "Descrição deve conter até 50 caracteres")
 	private String descricao;
-//	private String foto;
+
+	@DecimalMin(value = "0.01")
+	@DecimalMax(value = "9999999.99", message = "O valor da cerveja deve ser menor que R$9.999.999,99")
+	@NotNull(message = "O valor é obrigatório")
 	private BigDecimal valor;
 
 	@Column(name = "teor_alcoolico")
+	@NotNull(message = "O teor alcóolico é obrigatório")
+	@DecimalMax(value = "100.0", message = "O valor do teor alcóolico deve ser menor que 100")
 	private BigDecimal teorAlcoolico;
 
+	@NotNull(message = "A comissão é obrigatóira")
+	@DecimalMax(value = "100.0", message = "A comissão deve ser igual ou menor que 100")
 	private BigDecimal comissao;
 
+	@NotNull(message = "A quantidade em estoque é obrigatória")
+	@Max(value = 9999, message = "A quantidade em estoque deve ser menor que 9.999")
 	@Column(name = "quantidade_estoque")
 	private Integer quantidadeEstoque;
 
-	@Enumerated(EnumType.STRING)
+	@NotNull(message = "A origem é obrigatória")
+	@Enumerated(STRING)
 	private Origem origem;
 
-	@Enumerated(EnumType.STRING)
+	@NotNull(message = "O sabor é obrigatório")
+	@Enumerated(STRING)
 	private Sabor sabor;
 
+	@NotNull(message = "O estilo é obrigatório")
 	@ManyToOne
 	@JoinColumn(name = "id_estilo")
 	private Estilo estilo;
+
+	public Cerveja() {
+	}
 
 	public String getSku() {
 		return sku;

@@ -8,6 +8,4 @@ import br.com.lucas.brewer.service.CervejaService;
 @Configuration
 @ComponentScan(basePackageClasses = CervejaService.class)
 public class ServiceConfig {
-
-	
 }
