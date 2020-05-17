@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.lucas.brewer.model.Cerveja;
+import br.com.lucas.brewer.model.enums.Origem;
 import br.com.lucas.brewer.model.enums.Sabor;
 import br.com.lucas.brewer.repository.EstiloRepository;
 
@@ -20,12 +21,11 @@ public class CervejasController {
 
 	@Autowired
 	private EstiloRepository estiloRepository;
-	
+
 	@RequestMapping("/cervejas/cadastro")
 	public ModelAndView novo(Cerveja cerveja) {
 		ModelAndView mv = new ModelAndView("cerveja/cadastro-cerveja");
-		mv.addObject("sabores", Sabor.values());
-		mv.addObject("estilos", estiloRepository.findAll());
+		getValuesForSelect(mv);
 		return mv;
 	}
 
@@ -39,5 +39,11 @@ public class CervejasController {
 
 		attributes.addFlashAttribute("mensagem", "Cerveja cadastrada com sucesso! ");
 		return new ModelAndView("redirect:/cervejas/cadastro");
+	}
+
+	private void getValuesForSelect(ModelAndView mv) {
+		mv.addObject("sabores", Sabor.values());
+		mv.addObject("estilos", estiloRepository.findAll());
+		mv.addObject("origens", Origem.values());
 	}
 }
