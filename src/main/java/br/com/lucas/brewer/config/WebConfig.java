@@ -3,7 +3,6 @@ package br.com.lucas.brewer.config;
 import java.math.BigDecimal;
 import java.util.Locale;
 
-import org.hibernate.validator.spi.messageinterpolation.LocaleResolver;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
