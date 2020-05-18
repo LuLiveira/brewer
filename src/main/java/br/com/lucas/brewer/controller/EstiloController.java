@@ -15,18 +15,19 @@ import br.com.lucas.brewer.service.EstiloService;
 import br.com.lucas.brewer.service.exception.NomeEstiloJaCadastradoExcetion;
 
 @Controller
+@RequestMapping("/estilos")
 public class EstiloController {
 
 	@Autowired
 	private EstiloService estiloService;
 
-	@RequestMapping("/estilos/cadastro")
+	@RequestMapping("/cadastro")
 	public ModelAndView novo(Estilo estilo) {
 		ModelAndView mv = new ModelAndView("cerveja/estilo/cadastro-estilo");
 		return mv;
 	}
 
-	@RequestMapping(value = "/estilos/cadastro", method = RequestMethod.POST)
+	@RequestMapping(value = "/cadastro", method = RequestMethod.POST)
 	public ModelAndView cadastrar(@Valid Estilo estilo, BindingResult result, RedirectAttributes attributes) {
 
 		if (result.hasErrors())
