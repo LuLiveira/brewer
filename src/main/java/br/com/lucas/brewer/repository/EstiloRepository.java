@@ -10,5 +10,5 @@ import br.com.lucas.brewer.model.Estilo;
 @Repository
 public interface EstiloRepository extends JpaRepository<Estilo, Long>{
 	
-	public Optional<Estilo> findByNomeIgnoreCase(String nome);
+	Optional<Estilo> findByNomeIgnoreCase(String nome);
 }

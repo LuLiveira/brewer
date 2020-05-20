@@ -13,8 +13,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
@@ -77,13 +75,7 @@ public class Cerveja implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_estilo")
 	private Estilo estilo;
-
-	@PrePersist
-	@PreUpdate
-	private void prePersistOrUpdate() {
-		sku = sku.toUpperCase();
-	}
-
+	
 	public Cerveja() {
 	}
 
@@ -92,7 +84,7 @@ public class Cerveja implements Serializable {
 	}
 
 	public void setSku(String sku) {
-		this.sku = sku;
+		this.sku = sku.toUpperCase();
 	}
 
 	public String getNome() {
