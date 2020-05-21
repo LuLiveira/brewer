@@ -14,7 +14,7 @@ var css_dist = "./src/main/resources/static/stylesheets";
 var css_dist_name = "brewer.min.css";
 
 function minifyJS() {
-	return gulp.src([js_dev_2])
+	return gulp.src([js_dev_1])
 	.pipe(uglify().on('error', function(error) {
 		console.log(error);
 	}))
@@ -48,12 +48,12 @@ gulp.task('minificar-css', function(){
 	return minifyCSS();
 });
 
-gulp.task('minificar-js', function(){
+gulp.task('minificar-js-2', function(){
 	return minifyJS2();
 })
 
 gulp.task('monitor', function(){
-	gulp.watch([js_dev_1, js_dev_2, css_dev], gulp.series('minificar-js', 'minificar-css'));
+	gulp.watch([js_dev_1, js_dev_2, css_dev], gulp.series('minificar-js', 'minificar-css', 'minificar-js-2'));
 });
 
 gulp.task('default', gulp.series('monitor'));
