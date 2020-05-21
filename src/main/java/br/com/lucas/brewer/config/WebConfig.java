@@ -26,6 +26,7 @@ import org.thymeleaf.templateresolver.ITemplateResolver;
 
 import br.com.lucas.brewer.controller.CervejaController;
 import br.com.lucas.brewer.controller.converter.EstiloConverter;
+import br.com.lucas.brewer.thymeleaf.dialect.BrewerDialect;
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 /**
@@ -61,7 +62,8 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 		engine.setEnableSpringELCompiler(true);
 		engine.setTemplateResolver(templateResolver());
 		engine.addDialect(new LayoutDialect());
-
+		engine.addDialect(new BrewerDialect());
+		
 		return engine;
 	}
 
@@ -94,7 +96,7 @@ public class WebConfig implements WebMvcConfigurer, ApplicationContextAware {
 
 		return conversionService;
 	}
-	
+
 	@Bean
 	public org.springframework.web.servlet.LocaleResolver localeResolver() {
 		return new FixedLocaleResolver(new Locale("pt", "BR"));
