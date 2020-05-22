@@ -1,6 +1,8 @@
 package br.com.lucas.brewer.config.init;
 
 import javax.servlet.Filter;
+import javax.servlet.MultipartConfigElement;
+import javax.servlet.ServletRegistration.Dynamic;
 
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
@@ -33,5 +35,10 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 		encoding.setForceEncoding(true);
 
 		return new Filter[] { encoding };
+	}
+	
+	@Override
+	protected void customizeRegistration(Dynamic registration) { //Configuração para receber fotos no controller (FotoController.class)
+		registration.setMultipartConfig(new MultipartConfigElement(""));
 	}
 }
