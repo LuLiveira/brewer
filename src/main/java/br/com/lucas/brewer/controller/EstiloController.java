@@ -22,22 +22,22 @@ public class EstiloController {
 	private EstiloService estiloService;
 
 	@RequestMapping("/cadastro")
-	public ModelAndView novo(Estilo estilo) {
+	public ModelAndView carregarCadastro(Estilo estilo) {
 		ModelAndView mv = new ModelAndView("cerveja/estilo/cadastro-estilo");
 		return mv;
 	}
 
 	@RequestMapping(value = "/cadastro", method = RequestMethod.POST)
-	public ModelAndView cadastrar(@Valid Estilo estilo, BindingResult result, RedirectAttributes attributes) {
+	public ModelAndView cadastrarEstilo(@Valid Estilo estilo, BindingResult result, RedirectAttributes attributes) {
 
 		if (result.hasErrors())
-			return novo(estilo);
+			return carregarCadastro(estilo);
 
 		try {
 			this.estiloService.salvar(estilo);
 		} catch (NomeEstiloJaCadastradoExcetion e) {
 			result.rejectValue("nome", e.getMessage(), e.getMessage());
-			return novo(estilo);
+			return carregarCadastro(estilo);
 		}
 
 		attributes.addFlashAttribute("mensagem", "Estilo cadastrado com sucesso! ");

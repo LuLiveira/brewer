@@ -19,11 +19,11 @@ public class CervejaService {
 	private EstiloService estiloService;
 	
 	@Transactional
-	public void salvar(Cerveja cerveja) {
+	public void cadastrarNova(Cerveja cerveja) {
 		cervejaRepository.save(cerveja);
 	}
 
-	public Estilo salvar(Estilo estilo) {
+	public Estilo cadastrarNovo(Estilo estilo) {
 		return estiloService.salvar(estilo);
 	}
 }

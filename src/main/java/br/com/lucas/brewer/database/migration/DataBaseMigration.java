@@ -15,15 +15,15 @@ import org.slf4j.LoggerFactory;
  */
 public class DataBaseMigration {
 	
-	private static final String DATABASE_PROPERTIES = "database.properties";
+	private static final String ARQUIVO_DATABASE_PROPERTIES = "database.properties";
 	private static final Logger LOG = LoggerFactory.getLogger(DataBaseMigration.class);
 	private static Properties properties;
-	private static final String dir = System.getProperty("user.dir").concat("\\src\\main\\resources\\");
+	private static final String DIRETORIO = System.getProperty("user.dir").concat("\\src\\main\\resources\\");
 	
 	public static void main(String[] args) {
 		
 		try {
-			properties = carregaDadosDoArquivoDatabaseProperties(dir.concat(DataBaseMigration.DATABASE_PROPERTIES));
+			properties = carregaDadosDoArquivoDatabaseProperties(DIRETORIO.concat(DataBaseMigration.ARQUIVO_DATABASE_PROPERTIES));
 		} catch (IOException e) {
 			e.printStackTrace();
 			LOG.error("\n" + e.getMessage() + "\n Não foi possível realizar a migration ");

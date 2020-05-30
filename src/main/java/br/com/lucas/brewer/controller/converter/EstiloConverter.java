@@ -16,7 +16,7 @@ public class EstiloConverter implements Converter<String, Estilo> {
 
 	@Override
 	public Estilo convert(String id) {
-		if(!StringUtils.isEmpty(id)) {
+		if (!StringUtils.isEmpty(id)) {
 			Estilo estilo = new Estilo();
 			estilo.setId(Long.valueOf(id));
 			return estilo;

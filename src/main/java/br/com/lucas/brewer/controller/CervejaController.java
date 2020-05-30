@@ -38,20 +38,20 @@ public class CervejaController {
 	private CervejaService cervejaService;
 
 	@RequestMapping("/cadastro")
-	public ModelAndView novo(Cerveja cerveja) {
+	public ModelAndView carregarCadastro(Cerveja cerveja) {
 		ModelAndView mv = new ModelAndView("cerveja/cadastro-cerveja");
-		getValuesForSelect(mv);
+		recuperaValoresParaOSelect(mv);
 		return mv;
 	}
 
 	@RequestMapping(value = "/cadastro", method = POST)
-	public ModelAndView cadastrar(@Valid Cerveja cerveja, BindingResult result, RedirectAttributes attributes) {
+	public ModelAndView cadastrarCerveja(@Valid Cerveja cerveja, BindingResult result, RedirectAttributes attributes) {
 
 		if (result.hasErrors()) {
-			return novo(cerveja);
+			return carregarCadastro(cerveja);
 		}
 
-		this.cervejaService.salvar(cerveja);
+		this.cervejaService.cadastrarNova(cerveja);
 
 		attributes.addFlashAttribute("mensagem", "Cerveja cadastrada com sucesso! ");
 		return new ModelAndView("redirect:/cervejas/cadastro");
@@ -63,12 +63,12 @@ public class CervejaController {
 		if (result.hasErrors())
 			return ResponseEntity.badRequest().body(result.getFieldError("nome").getDefaultMessage());
 
-		estilo = this.cervejaService.salvar(estilo);
+		estilo = this.cervejaService.cadastrarNovo(estilo);
 
 		return ResponseEntity.ok(estilo);
 	}
 
-	private void getValuesForSelect(ModelAndView mv) {
+	private void recuperaValoresParaOSelect(ModelAndView mv) {
 		mv.addObject("sabores", Sabor.values());
 		mv.addObject("estilos", estiloRepository.findAll());
 		mv.addObject("origens", Origem.values());

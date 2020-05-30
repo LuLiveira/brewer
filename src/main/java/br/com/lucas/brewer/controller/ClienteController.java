@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ClienteController {
 
 	@RequestMapping("/clientes/cadastro")
-	public String novo() {
+	public String carregarCadastroCliente() {
 		return "cliente/cadastro-cliente";
 	}
 	
