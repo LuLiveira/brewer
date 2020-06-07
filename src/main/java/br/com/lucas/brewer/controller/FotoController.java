@@ -25,7 +25,7 @@ public class FotoController {
 		DeferredResult<FotoDTO> result = new DeferredResult<FotoDTO>();
 		Thread thread = new Thread(new FotoStorageRunnable(files, result));
 		thread.run();
-		System.out.println(files.length);
+		System.out.println();
 		return result;
 	}
 }

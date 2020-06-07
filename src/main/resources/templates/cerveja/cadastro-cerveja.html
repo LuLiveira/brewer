@@ -144,7 +144,10 @@
 						type: 'json',
 						filelimit: 1,
 						allow: '*.(jpg|jpeg|png)',
-						url: '/brewer/fotos'
+						url: '/brewer/fotos',
+						complete: function(response){
+							console.log('response', response);
+						}
 				};
 				
 				UIkit.upload($('#upload-select'), settings);

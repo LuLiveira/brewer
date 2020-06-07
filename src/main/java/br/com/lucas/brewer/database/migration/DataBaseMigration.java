@@ -26,7 +26,7 @@ public class DataBaseMigration {
 			properties = carregaDadosDoArquivoDatabaseProperties(DIRETORIO.concat(DataBaseMigration.ARQUIVO_DATABASE_PROPERTIES));
 		} catch (IOException e) {
 			e.printStackTrace();
-			LOG.error("\n" + e.getMessage() + "\n Não foi possível realizar a migration ");
+			LOG.error("\n" + e.getMessage() + "\n NÃO FOI POSSÍVEL REALIZAR A MIGRATION.");
 		}
 		
 		Flyway flyway = Flyway.configure().dataSource(
