@@ -19,15 +19,14 @@ public class DataBaseMigration {
 	private static final Logger LOG = LoggerFactory.getLogger(DataBaseMigration.class);
 	private static Properties properties;
 	private static final String DIRETORIO = System.getProperty("user.dir").concat("\\src\\main\\resources\\");
+	private static final String DATABASE_PROPERTIES = DIRETORIO.concat(DataBaseMigration.ARQUIVO_DATABASE_PROPERTIES);
 	
 	public static void main(String[] args) {
 		
-		try {
-			properties = carregaDadosDoArquivoDatabaseProperties(DIRETORIO.concat(DataBaseMigration.ARQUIVO_DATABASE_PROPERTIES));
-		} catch (IOException e) {
-			e.printStackTrace();
-			LOG.error("\n" + e.getMessage() + "\n NÃO FOI POSSÍVEL REALIZAR A MIGRATION.");
-		}
+		
+			properties = carregaDadosDo(DATABASE_PROPERTIES);
+
+		
 		
 		Flyway flyway = Flyway.configure().dataSource(
 												properties.getProperty("database.url"), 
@@ -38,13 +37,18 @@ public class DataBaseMigration {
 		flyway.migrate();
 	}
 
-	private static Properties carregaDadosDoArquivoDatabaseProperties(String nomeArquivo) throws IOException {
+	private static Properties carregaDadosDo(String databaseProperties){
 		FileInputStream fis = null;
 
-		fis = new FileInputStream(nomeArquivo);
-		properties = new Properties();
-		properties.load(fis);
-		fis.close();
+		try {
+			fis = new FileInputStream(databaseProperties);
+			properties = new Properties();
+			properties.load(fis);
+			fis.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+			LOG.error("\n" + e.getMessage() + "\n NÃO FOI POSSÍVEL REALIZAR A MIGRATION.");
+		}
 		
 		return properties;
 	}

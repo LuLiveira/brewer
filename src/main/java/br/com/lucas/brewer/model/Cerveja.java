@@ -23,7 +23,7 @@ import javax.validation.constraints.Size;
 
 import br.com.lucas.brewer.model.enums.Origem;
 import br.com.lucas.brewer.model.enums.Sabor;
-import br.com.lucas.brewer.utils.validation.SKUValidation;
+import br.com.validation.SKUValidation;
 
 @Entity
 @Table(name = "cerveja")
@@ -75,9 +75,11 @@ public class Cerveja implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_estilo")
 	private Estilo estilo;
-	
-	public Cerveja() {
-	}
+
+	private String foto;
+
+	@Column(name = "content_type")
+	private String contentType;
 
 	public String getSku() {
 		return sku;
@@ -165,6 +167,22 @@ public class Cerveja implements Serializable {
 
 	public void setEstilo(Estilo estilo) {
 		this.estilo = estilo;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public String getContentType() {
+		return contentType;
+	}
+
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
 	}
 
 	@Override

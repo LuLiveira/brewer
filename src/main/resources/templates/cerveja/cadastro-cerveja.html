@@ -118,6 +118,8 @@
 				
 				<div class="row">
 					<div class="form-group col-sm-12">
+						<input type="hidden" th:field="*{foto}" />
+						<input type="hidden" th:field="*{contentType}" />
 						<label class="control-label">Foto</label>
 						
 						<div class="bw-upload" id="upload-drop">
@@ -145,8 +147,9 @@
 						filelimit: 1,
 						allow: '*.(jpg|jpeg|png)',
 						url: '/brewer/fotos',
-						complete: function(response){
-							console.log('response', response);
+						complete: function({response}){
+							$('input[name=foto]').val(response.nome);
+							$('input[name=contentType]').val(response.contentType);
 						}
 				};
 				
