@@ -24,6 +24,7 @@ import br.com.lucas.brewer.repository.CervejaRepository;
  *
  */
 
+@Deprecated
 @Configuration
 @EnableJpaRepositories(basePackageClasses = CervejaRepository.class, enableDefaultTransactions = false)
 @EnableTransactionManagement

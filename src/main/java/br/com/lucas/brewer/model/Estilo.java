@@ -28,6 +28,13 @@ public class Estilo implements Serializable {
 	@OneToMany(mappedBy = "estilo")
 	private List<Cerveja> cerveja;
 
+	public Estilo() {}
+	
+	public Estilo(long id, String nome) {
+		this.id = id;
+		this.nome = nome;
+	}
+
 	public Long getId() {
 		return id;
 	}
