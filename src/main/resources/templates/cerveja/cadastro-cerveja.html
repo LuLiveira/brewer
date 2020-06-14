@@ -122,10 +122,12 @@
 						<input type="hidden" th:field="*{contentType}" />
 						<label class="control-label">Foto</label>
 						
-						<div class="bw-upload" id="upload-drop">
-							<i class="glyphicon glyphicon-cloud-upload"></i>
-							<span>Arraste a foto aqui ou </span>
-							<a class="bw-upload-form-file">selecione <input id="upload-select" type="file" accept=".jpg,.jpeg,.png" /> </a>
+						<div class="js-container-foto-cerveja">
+							<div class="bw-upload" id="upload-drop">
+								<i class="glyphicon glyphicon-cloud-upload"></i>
+								<span>Arraste a foto aqui ou </span>
+								<a class="bw-upload-form-file">selecione <input id="upload-select" type="file" accept=".jpg,.jpeg,.png" /> </a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -136,10 +138,12 @@
 			</form>
 		</div>
 		<div th:replace="/utils/modal-cadastro-estilo-cerveja"></div>
+		<th:block th:replace="handlebars/foto-cerveja"></th:block>
 	</section>
 	<th:block layout:fragment="javascript-extra">
 		<script th:src="@{/javascript/estilo.min.js}"></script>
 		<script th:src="@{/javascript/vendors/uikit.min.js}"></script>
+		<script th:src="@{/javascript/vendors/handlebars.min.js}"></script>
 		<script>
 			$(function() {
 				var settings = {
@@ -148,8 +152,34 @@
 						allow: '*.(jpg|jpeg|png)',
 						url: '/brewer/fotos',
 						complete: function({response}){
-							$('input[name=foto]').val(response.nome);
-							$('input[name=contentType]').val(response.contentType);
+							
+							if(response.nome == undefined && response.contentType == undefined)
+								response = JSON.parse(response);
+							
+							var inputNomeFoto = $('input[name=foto]');
+							inputNomeFoto.val(response.nome);
+							
+							var inputContentType = $('input[name=contentType]');
+							inputContentType.val(response.contentType);
+							
+							var divFotoCerveja = $('#foto-cerveja').html();
+							var template = Handlebars.compile(divFotoCerveja);
+							var htmlFotoCerveja = template({
+								nomeFoto: response.nome,
+							});
+							
+							var uploadDrop = $('#upload-drop');
+							uploadDrop.addClass('hidden');
+							
+							$('.js-container-foto-cerveja').append(htmlFotoCerveja);
+							
+							$('.js-remove-foto').on('click', () => {
+								$('.js-foto-cerveja').remove();
+								
+								uploadDrop.removeClass('hidden');
+								inputNomeFoto.val('');
+								inputContentType.val('');
+							});
 						}
 				};
 				
