@@ -1,0 +1,2 @@
+ALTER TABLE usuario
+  ADD COLUMN valido BOOLEAN DEFAULT false;

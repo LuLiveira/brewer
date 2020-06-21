@@ -34,6 +34,7 @@ public class DataBaseMigration {
 												properties.getProperty("database.password"))
 											.load();
 		
+		flyway.repair();
 		flyway.migrate();
 	}
 
