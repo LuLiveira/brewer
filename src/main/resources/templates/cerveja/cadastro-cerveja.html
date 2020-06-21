@@ -122,7 +122,7 @@
 						<input type="hidden" th:field="*{contentType}" />
 						<label class="control-label">Foto</label>
 						
-						<div class="js-container-foto-cerveja">
+						<div class="js-container-foto-cerveja" th:attr="data-url-fotos=@{/fotos}">
 							<div class="bw-upload" id="upload-drop">
 								<i class="glyphicon glyphicon-cloud-upload"></i>
 								<span>Arraste a foto aqui ou </span>
@@ -144,49 +144,7 @@
 		<script th:src="@{/javascript/estilo.min.js}"></script>
 		<script th:src="@{/javascript/vendors/uikit.min.js}"></script>
 		<script th:src="@{/javascript/vendors/handlebars.min.js}"></script>
-		<script>
-			$(function() {
-				var settings = {
-						type: 'json',
-						filelimit: 1,
-						allow: '*.(jpg|jpeg|png)',
-						url: '/brewer/fotos',
-						complete: function({response}){
-							
-							if(response.nome == undefined && response.contentType == undefined)
-								response = JSON.parse(response);
-							
-							var inputNomeFoto = $('input[name=foto]');
-							inputNomeFoto.val(response.nome);
-							
-							var inputContentType = $('input[name=contentType]');
-							inputContentType.val(response.contentType);
-							
-							var divFotoCerveja = $('#foto-cerveja').html();
-							var template = Handlebars.compile(divFotoCerveja);
-							var htmlFotoCerveja = template({
-								nomeFoto: response.nome,
-							});
-							
-							var uploadDrop = $('#upload-drop');
-							uploadDrop.addClass('hidden');
-							
-							$('.js-container-foto-cerveja').append(htmlFotoCerveja);
-							
-							$('.js-remove-foto').on('click', () => {
-								$('.js-foto-cerveja').remove();
-								
-								uploadDrop.removeClass('hidden');
-								inputNomeFoto.val('');
-								inputContentType.val('');
-							});
-						}
-				};
-				
-				UIkit.upload($('#upload-select'), settings);
-				UIkit.upload($('#upload-drop'), settings);
-			});
-		</script>
+		<script th:src="@{/javascript/cerveja-upload-foto.js}"></script>
 	</th:block>
 </body>
 </html>
