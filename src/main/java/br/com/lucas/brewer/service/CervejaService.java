@@ -1,9 +1,13 @@
 package br.com.lucas.brewer.service;
 
+import java.util.Optional;
+import java.util.function.Function;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import br.com.lucas.brewer.dao.CervejaDAO;
 import br.com.lucas.brewer.model.Cerveja;
@@ -25,9 +29,13 @@ public class CervejaService {
 	
 	@Transactional
 	public void cadastrarNova(Cerveja cerveja) throws CervejaDuplicadaException {
-		if(true) {
-			throw new CervejaDuplicadaException("Já existe uma cerveja com este SKU.");
+		
+		Optional<String> id = cervejaDAO.findCervejaBySku(cerveja.getSku());
+		
+		if(!StringUtils.isEmpty(id)) {
+			throw new CervejaDuplicadaException("Já existe uma cerveja cadastrada com este SKU.");
 		}
+		
 		cervejaDAO.insertCerveja(cerveja);
 	}
 

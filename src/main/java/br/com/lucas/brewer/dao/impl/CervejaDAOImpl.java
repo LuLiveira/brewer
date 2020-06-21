@@ -1,5 +1,7 @@
 package br.com.lucas.brewer.dao.impl;
 
+import java.util.Optional;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,7 @@ public class CervejaDAOImpl implements CervejaDAO {
 			 .append(" (sku, nome, descricao, valor, teor_alcoolico, comissao, sabor, origem, id_estilo, quantidade_estoque, foto) ")
 			 .append(" values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
 		
-		jdbcTemplate.update(query.toString(), 
+		jdbcTemplate.update(query.toString(), //query
 							cerveja.getSku(),
 							cerveja.getNome(),
 							cerveja.getDescricao(),
@@ -39,5 +41,14 @@ public class CervejaDAOImpl implements CervejaDAO {
 							cerveja.getQuantidadeEstoque(),
 							cerveja.getFoto()
 						);
+	}
+
+	@Override
+	public Optional<String> findCervejaBySku(String sku) {
+		StringBuilder query = new StringBuilder();
+		query.append(" SELECT sku FROM cerveja WHERE sku = ? ");
+		
+		sku = jdbcTemplate.queryForObject(query.toString(), new Object[] {sku}, (rs, rowNumber) -> rs.getString("sku"));
+		return Optional.ofNullable(sku);
 	}
 }

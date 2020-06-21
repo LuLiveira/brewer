@@ -1,11 +1,9 @@
 package br.com.lucas.brewer.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -38,8 +36,8 @@ public class CervejaController {
 	private final EstiloRepository estiloRepository;
 	private final CervejaService cervejaService;
 	
-	private final String CADASTRO_ENDPOINT = "/cadastro";
-	private final String CADASTRO_ESTILO_ENDPOINT = CADASTRO_ENDPOINT + "/estilo";
+	private final String CADASTRO_ENDPOINT 			= "/cadastro";
+	private final String CADASTRO_ESTILO_ENDPOINT 	= CADASTRO_ENDPOINT + "/estilo";
 	
 	public CervejaController(CervejaService cervejaService, EstiloRepository estiloRepository) {
 		this.cervejaService = cervejaService;
