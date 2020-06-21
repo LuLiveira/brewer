@@ -3,10 +3,11 @@
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:th="http://www.thymeleaf.org"
 	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	layout:decorator="'layout/layout-padrao'">
+	layout:decorator="'layout/layout-padrao'"
+	xmlns:brewer="http://brewer.com.br">
 	
 <head>
-	<title>Cadastro de Cliente</title>
+	<title>Cadastro de Usuário</title>
 	<link rel="stylesheet" type="text/css" th:href="@{/stylesheets/vendors/bootstrap-switch.min.css}"/>
 </head>
 <body>
@@ -22,29 +23,30 @@
 		<div class="container-fluid">
 				
 			<form method="POST" th:object="${usuario}" class="form-vertical  js-form-loading">
+				<brewer:message />
 				
 				<div class="row">
 					<div class="col-sm-12 form-group">
 						<label for="nome">Nome</label>
-						<input id="nome" type="text" class="form-control"/>
+						<input id="nome" type="text" class="form-control" th:field="*{nome}"/>
 					</div>
 				</div>
 				
 				<div class="row">
 					<div class="col-sm-6 form-group">
 						<label for="email">E-mail</label>
-						<input id="email" type="email" class="form-control"/>
+						<input id="email" type="email" class="form-control" th:field="*{email}"/>
 					</div>
 					<div class="col-sm-2 form-group">
 						<label for="nascimento">Data de nascimento</label>
-						<input id="nascimento" type="date" class="form-control"/>
+						<input id="nascimento" type="date" class="form-control" />
 					</div>
 				</div>
 				
 				<div class="row">
 					<div class="col-sm-4 form-group">
 						<label for="senha">Senha</label>
-						<input id="senha" type="password" class="form-control"/>
+						<input id="senha" type="password" class="form-control" th:field="*{senha}"/>
 					</div>
 					<div class="col-sm-4 form-group">
 						<label for="s-confirma">Confirmação de senha</label>
@@ -53,7 +55,7 @@
 					<div class="col-sm-4 form-group">
 						<label for="status">Status</label>
 						<div>
-							<input type="checkbox" name="ativo" class="js-status" data-size="small" data-off-color="danger" data-on-text="Ativo" data-off-text="Inativo">
+							<input type="checkbox" name="ativo" class="js-status" data-size="small" data-off-color="danger" data-on-text="Ativo" data-off-text="Inativo" th:field="*{ativo}">
 						</div>
 					</div>
 				</div>
