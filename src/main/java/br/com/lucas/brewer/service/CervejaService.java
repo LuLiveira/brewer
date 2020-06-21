@@ -9,6 +9,7 @@ import br.com.lucas.brewer.dao.CervejaDAO;
 import br.com.lucas.brewer.model.Cerveja;
 import br.com.lucas.brewer.model.Estilo;
 import br.com.lucas.brewer.repository.CervejaRepository;
+import br.com.lucas.brewer.service.exception.CervejaDuplicadaException;
 
 @Service
 public class CervejaService {
@@ -23,7 +24,10 @@ public class CervejaService {
 	private EstiloService estiloService;
 	
 	@Transactional
-	public void cadastrarNova(Cerveja cerveja) {
+	public void cadastrarNova(Cerveja cerveja) throws CervejaDuplicadaException {
+		if(true) {
+			throw new CervejaDuplicadaException("Já existe uma cerveja com este SKU.");
+		}
 		cervejaDAO.insertCerveja(cerveja);
 	}
 
