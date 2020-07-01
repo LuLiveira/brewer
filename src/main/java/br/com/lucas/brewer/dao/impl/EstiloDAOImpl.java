@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import javax.sql.DataSource;
@@ -79,6 +81,17 @@ public class EstiloDAOImpl implements EstiloDAO {
 												);
 		
 		return Optional.ofNullable(estilo);
+	}
+
+	@Override
+	public List<Estilo> selectAll() {
+		StringBuffer query = new StringBuffer();
+		query.append(" SELECT * FROM estilo ");
+		
+		return jdbcTemplate.query(
+				query.toString(), 
+				(rs, rowNumber) -> new Estilo(rs.getLong("id"), rs.getString("nome"))
+			);
 	}
 
 }

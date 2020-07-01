@@ -3,7 +3,6 @@ package br.com.lucas.brewer.model;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,9 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-
-import br.com.lucas.brewer.utils.validation.SenhaValidation;
 
 @Entity
 @Table(name = "usuario")

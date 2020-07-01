@@ -1,6 +1,8 @@
 package br.com.lucas.brewer.dao.impl;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 import javax.sql.DataSource;
 
@@ -10,6 +12,9 @@ import org.springframework.stereotype.Component;
 
 import br.com.lucas.brewer.dao.CervejaDAO;
 import br.com.lucas.brewer.model.Cerveja;
+import br.com.lucas.brewer.model.Estilo;
+import br.com.lucas.brewer.model.enums.Origem;
+import br.com.lucas.brewer.model.enums.Sabor;
 
 @Component
 public class CervejaDAOImpl implements CervejaDAO {
@@ -50,5 +55,27 @@ public class CervejaDAOImpl implements CervejaDAO {
 		
 		sku = jdbcTemplate.queryForObject(query.toString(), new Object[] {sku}, (rs, rowNumber) -> rs.getString("sku"));
 		return Optional.ofNullable(sku);
+	}
+
+	@Override
+	public List<Cerveja> selectAll() {
+		StringBuilder query = new StringBuilder();
+		query.append(" select c.*, e.nome as estilo from cerveja c inner join estilo e on c.id_estilo = e.id ");
+		
+		return jdbcTemplate.query(query.toString(), (rs, rowNumber) -> new Cerveja(
+					rs.getLong("id"),
+					rs.getString("sku"),
+					rs.getString("nome"),
+					rs.getString("descricao"),
+					rs.getBigDecimal("valor"),
+					rs.getBigDecimal("teor_alcoolico"),
+					rs.getBigDecimal("comissao"),
+					rs.getInt("quantidade_estoque"),
+					rs.getString("origem"),
+					rs.getString("sabor"),
+					Estilo.estiloFactory(rs.getLong("id_estilo"), rs.getString("estilo")),
+					rs.getString("foto"),
+					rs.getString("content_type")
+				));
 	}
 }

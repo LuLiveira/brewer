@@ -1,7 +1,6 @@
 package br.com.lucas.brewer.service;
 
 import java.util.Optional;
-import java.util.function.Function;
 
 import javax.transaction.Transactional;
 

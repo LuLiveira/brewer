@@ -15,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.lucas.brewer.dao.CervejaDAO;
+import br.com.lucas.brewer.dao.EstiloDAO;
 import br.com.lucas.brewer.model.Cerveja;
 import br.com.lucas.brewer.model.Estilo;
 import br.com.lucas.brewer.model.enums.Origem;
 import br.com.lucas.brewer.model.enums.Sabor;
+import br.com.lucas.brewer.model.factory.ModelAndViewFactory;
 import br.com.lucas.brewer.repository.EstiloRepository;
 import br.com.lucas.brewer.service.CervejaService;
 import br.com.lucas.brewer.service.exception.CervejaDuplicadaException;
@@ -33,20 +36,23 @@ import br.com.lucas.brewer.service.exception.CervejaDuplicadaException;
 @RequestMapping("/cervejas")
 public class CervejaController {
 
-	private final EstiloRepository estiloRepository;
+	private final EstiloDAO estiloDAO;
+	private final CervejaDAO cervejaDAO;
+	
 	private final CervejaService cervejaService;
 	
 	private final String CADASTRO_ENDPOINT 			= "/cadastro";
 	private final String CADASTRO_ESTILO_ENDPOINT 	= CADASTRO_ENDPOINT + "/estilo";
 	
-	public CervejaController(CervejaService cervejaService, EstiloRepository estiloRepository) {
+	public CervejaController(CervejaService cervejaService, EstiloDAO estiloDAO, CervejaDAO cervejaDAO) {
 		this.cervejaService = cervejaService;
-		this.estiloRepository = estiloRepository;
+		this.estiloDAO = estiloDAO;
+		this.cervejaDAO = cervejaDAO;
 	}
 
 	@GetMapping(CADASTRO_ENDPOINT)
 	public ModelAndView carregarCadastro(Cerveja cerveja) {
-		ModelAndView mv = new ModelAndView("cerveja/cadastro-cerveja");
+		ModelAndView mv = ModelAndViewFactory.instaceOf("cerveja/cadastro-cerveja");
 		recuperaValoresParaOSelect(mv);
 		return mv;
 	}
@@ -61,7 +67,7 @@ public class CervejaController {
 		try {
 			this.cervejaService.cadastrarNova(cerveja);
 			attributes.addFlashAttribute("mensagem", "Cerveja cadastrada com sucesso! ");
-			return new ModelAndView("redirect:/cervejas/cadastro");
+			return ModelAndViewFactory.instaceOf("redirect:/cervejas/cadastro");
 		} catch (CervejaDuplicadaException e) {
 			result.addError(new ObjectError("cerveja", e.getMessage()));
 			return carregarCadastro(cerveja);
@@ -79,10 +85,23 @@ public class CervejaController {
 
 		return ResponseEntity.ok(estilo);
 	}
+	
+	@GetMapping
+	public ModelAndView pesquisar() {
+		ModelAndView mv = ModelAndViewFactory.instaceOf("cerveja/pesquisa-cerveja");
+		buscarCervejaParaPesquisa(mv);
+		return mv;
+	}
 
 	private void recuperaValoresParaOSelect(ModelAndView mv) {
 		mv.addObject("sabores", Sabor.values());
-		mv.addObject("estilos", estiloRepository.findAll());
+		mv.addObject("estilos", estiloDAO.selectAll());
 		mv.addObject("origens", Origem.values());
+	}
+	
+	private void buscarCervejaParaPesquisa(ModelAndView mv) {
+		recuperaValoresParaOSelect(mv);
+		mv.addObject("cervejas", cervejaDAO.selectAll());
+		
 	}
 }

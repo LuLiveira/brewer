@@ -2,6 +2,7 @@ package br.com.lucas.brewer.model;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,6 +34,10 @@ public class Estilo implements Serializable {
 	public Estilo(long id, String nome) {
 		this.id = id;
 		this.nome = nome;
+	}
+	
+	public static Estilo estiloFactory(Long id, String nome) {
+		return new Estilo(id, nome);
 	}
 
 	public Long getId() {

@@ -80,7 +80,27 @@ public class Cerveja implements Serializable {
 
 	@Column(name = "content_type")
 	private String contentType;
+	
+	public Cerveja() {}
 
+	public Cerveja(long id, String sku, String nome, String descricao, BigDecimal valor,
+			BigDecimal teorAlcoolico, BigDecimal comissao, int quantidadeEstoque, String origem, String sabor, Estilo estilo,
+			String foto, String contentType) {
+				this.id = id;
+				this.sku = sku;
+				this.nome = nome;
+				this.descricao = descricao;
+				this.valor = valor;
+				this.teorAlcoolico = teorAlcoolico;
+				this.comissao = comissao;
+				this.quantidadeEstoque = quantidadeEstoque;
+				this.origem = Origem.valueOf(origem.toUpperCase());
+				this.sabor = Sabor.valueOf(sabor.toUpperCase());
+				this.estilo = estilo;
+				this.foto = foto;
+				this.contentType = contentType;
+	}
+	
 	public String getSku() {
 		return sku;
 	}
