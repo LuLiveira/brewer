@@ -4,11 +4,14 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import br.com.lucas.brewer.dao.UsuarioDAO;
 import br.com.lucas.brewer.mail.Mailer;
 import br.com.lucas.brewer.model.Usuario;
+import br.com.lucas.brewer.service.event.usuario.UsuarioEvent;
 import br.com.lucas.brewer.service.exception.UsuarioExistsException;
 import br.com.lucas.brewer.service.exception.UsuarioInvalidoException;
 
@@ -16,12 +19,14 @@ import br.com.lucas.brewer.service.exception.UsuarioInvalidoException;
 public class UsuarioService {
 	
 	private UsuarioDAO usuarioDAO;
+	private ApplicationEventPublisher publisher;
 	
-	@Autowired
+	@Autowired @Deprecated
 	private Mailer mailer;
 	
-	public UsuarioService(UsuarioDAO usuarioDAO) {
+	public UsuarioService(UsuarioDAO usuarioDAO, ApplicationEventPublisher publisher) {
 		this.usuarioDAO = usuarioDAO;
+		this.publisher = publisher;
 	}
 
 	public long cadastrarNovo(Usuario usuario) throws UsuarioInvalidoException, UsuarioExistsException {
@@ -38,7 +43,9 @@ public class UsuarioService {
 		usuario.setUuid(UUID.randomUUID().toString());
 		long id = usuarioDAO.insertAndReturn(usuario);
 		
-		mailer.enviar(new String[] {String.valueOf(id), usuario.getUuid(), usuario.getEmail()});
+		
+		publisher.publishEvent(new UsuarioEvent(Usuario.instaceOf(id, usuario.getUuid(), usuario.getEmail())));
+//		mailer.enviar(new String[] {String.valueOf(id), usuario.getUuid(), usuario.getEmail()}); era usado para enviar e-mail para o usuario agora esta sendo usando um evento de fato.
 		
 		return id;
 	}
@@ -57,8 +64,6 @@ public class UsuarioService {
 		}else {
 			throw new IllegalArgumentException("Código inválido");
 		}
-		
-		
 	}
 
 }

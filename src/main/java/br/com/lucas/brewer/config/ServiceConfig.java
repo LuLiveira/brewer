@@ -5,15 +5,15 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 import br.com.lucas.brewer.service.CervejaService;
-import br.com.lucas.brewer.storage.FotoStorage;
-import br.com.lucas.brewer.storage.local.FotoStorageLocal;
+import br.com.lucas.brewer.storage.FotoStorageLocal;
+import br.com.lucas.brewer.storage.local.FotoStorageLocalImpl;
 
 @Configuration
 @ComponentScan(basePackageClasses = CervejaService.class)
 public class ServiceConfig {
 	
 	@Bean
-	public FotoStorage fotoStorage() {
-		return new FotoStorageLocal();
+	public FotoStorageLocal fotoStorage() {
+		return new FotoStorageLocalImpl();
 	}
 }

@@ -11,7 +11,7 @@ import org.springframework.web.context.request.async.DeferredResult;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.lucas.brewer.model.dto.FotoDTO;
-import br.com.lucas.brewer.storage.FotoStorage;
+import br.com.lucas.brewer.storage.FotoStorageLocal;
 import br.com.lucas.brewer.storage.FotoStorageRunnable;
 
 /**
@@ -25,7 +25,7 @@ import br.com.lucas.brewer.storage.FotoStorageRunnable;
 public class FotoController {
 
 	@Autowired
-	private FotoStorage fotoStorage;
+	private FotoStorageLocal fotoStorage;
 	
 	@PostMapping
 	public DeferredResult<FotoDTO> upload(@RequestParam("files[]") MultipartFile[] files) {
@@ -38,5 +38,10 @@ public class FotoController {
 	@GetMapping("/temp/{nome:.*}")
 	public byte[] recuperarFotoTemporaria(@PathVariable String nome) { 
 		return fotoStorage.recuperarFotoTemporaria(nome);
+	}
+	
+	@GetMapping("/{nome:.*}")
+	public byte[] recuperarFoto(@PathVariable String nome) { 
+		return fotoStorage.recuperarFoto(nome);
 	}
 }

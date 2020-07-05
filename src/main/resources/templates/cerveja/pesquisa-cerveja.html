@@ -32,23 +32,23 @@
 		</div>
 		
 		<div class="container-fluid">
-			<form method="GET" th:object="${cerveja}" class="form-vertical js-form-loading">
+			<form method="GET" th:object="${cervejaFilter}" class="form-vertical js-form-loading">
 				<div class="row">
 					<div class="form-group col-sm-6">
 						<label class="control-label" for="sku">SKU</label>
-						<input type="text" class="form-control" id="sku" autofocus="autofocus" />
+						<input type="text" class="form-control" id="sku" autofocus="autofocus" th:field="*{sku}"/>
 					</div>
 					
 					<div class="form-group col-sm-6">
 						<label class="control-label" for="nome">Nome</label>
-						<input type="text" class="form-control" id="nome" />
+						<input type="text" class="form-control" id="nome" th:field="*{nome}"/>
 					</div>
 				</div>	
 				
 				<div class="row">
 					<div class="form-group col-sm-6">
 						<label class="control-label" for="estilo">Estilo</label>
-						<select id="estilo" class="form-control">
+						<select id="estilo" class="form-control" th:field="*{estilo}">
 							<option value="">Todos</option>
 							<option th:each="estilo : ${estilos}" th:text="${estilo.nome}" th:value="${estilo.id}"></option>
 						</select>
@@ -56,7 +56,7 @@
 					
 					<div class="form-group col-sm-6">
 						<label class="control-label" for="sabor">Sabor</label>
-						<select id="sabor" class="form-control">
+						<select id="sabor" class="form-control" th:field="*{sabor}">
 							<option value="">Todos</option>
 							<option th:each="sabor : ${sabores}" th:text="${sabor.descricao}" th:value="${sabor}"></option>
 						</select>
@@ -69,51 +69,64 @@
 						<div>
 							<th:block th:each="origem: ${origens}">
 								<div class="radio radio-inline">
-									<input type="radio" id="|id_${origem}|"	th:value="${origem}" name="origem"/>
+									<input type="radio" id="|id_${origem}|"	th:value="${origem}" th:field="*{origem}"/>
 									<label th:for="|id_${origem}|" th:text="${origem.descricao}"></label>							
 								</div>
 							</th:block>
 							<div class="radio radio-inline">
-								<input type="radio" id="todasOrigens" name="origem"/>
+								<input type="radio" id="todasOrigens" name="origem" th:checked="true"/>
 								<label for="todasOrigens">Todos</label>							
 							</div>
 						</div>
 					</div>
 					<div class="form-group col-sm-6">
-						<label class="control-label" for="precoDe">De:</label>
-						<input type="text" class="form-control aw-form-control-inline-sm js-decimal" id="precoDe" />
-						
-						<label class="control-label" for="precoDe">Até:</label>
-						<input type="text" class="form-control aw-form-control-inline-sm js-decimal" id="precoAte" />
+						<label class="control-label" for="precoDe">Valor</label>
+					<div class="form-inline">
+						<input type="text" class="form-control aw-form-control-inline-sm js-decimal" id="precoDe" th:field="*{valorDe}"/>
+						<label class="control-label" for="precoDe">até</label>
+						<input type="text" class="form-control aw-form-control-inline-sm js-decimal" id="precoAte" th:field="*{valorAte}"/>
+					</div>						
 					</div>
 				</div>
 				
 				<button type="submit" class="btn btn-primary">Pesquisar</button>				
 			</form>
 			
-			<div class="table-responsive">
+			<div class="table-responsive bw-tabela-simples">
 				<table class="table table-hover">
 					<thead>
 						<tr>
-							<th class="table-cervejas-col-foto"></th>
-							<th class="table-cervejas-col-sku"></th>
-							<th class="table-cervejas-col-nome"></th>
-							<th class="table-cervejas-col-estilo"></th>
-							<th class="table-cervejas-col-origem"></th>
-							<th class="table-cervejas-col-valor"></th>
-							<th class="table-cervejas-col-acoes"></th>
+							<th class="table-cervejas-col-foto">				 </th>
+							<th class="table-cervejas-col-sku" 		th:text="SKU"	/>
+							<th class="table-cervejas-col-nome" 	th:text="Nome"	/>
+							<th class="table-cervejas-col-estilo" 	th:text="Estilo"/>
+							<th class="table-cervejas-col-origem" 	th:text="Origem"/>
+							<th class="table-cervejas-col-valor" 	th:text="Valor"	/>
+							<th class="table-cervejas-col-acoes" 	th:text="Ações"	/>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="cerveja : ${cervejas}">
-							<td class="text-center" th:text="${cerveja.foto}"></td>
+							<td class="text-center">
+								<img th:src="@{/fotos/thumbnail.{foto}(foto=${cerveja.fotoOrMock})}" class="img-responsive" alt="miniatura-cerveja"/>
+							</td>
 							<td class="text-center" th:text="${cerveja.sku}"></td>
 							<td class="text-center" th:text="${cerveja.nome}"></td>
 							<td class="text-center" th:text="${cerveja.estilo.nome}"></td>
 							<td class="text-center" th:text="${cerveja.origem.descricao}"></td>
 							<td class="text-center" th:text="${cerveja.valor}"></td>
-							<td class="text-center">ac</td>
+							<td class="text-center">
+								<a class="btn btn-link btn-xs" title="Editar">
+									<i class="glyphicon glyphicon-pencil"></i>
+								</a>
+								<a class="btn btn-link btn-xs" title="Excluir">
+									<i class="glyphicon glyphicon-remove"></i>
+								</a>
+							</td>
 						<tr>
+						<tr th:if="${#lists.isEmpty(cervejas)}">
+							<td colspan="7">Nenhuma cerveja encontrada</td>
+						</tr>
 					</tbody>
 				</table>
 			</div>

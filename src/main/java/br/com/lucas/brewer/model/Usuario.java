@@ -63,21 +63,29 @@ public class Usuario implements Serializable {
 		this.ativo = ativo;
 		this.uuid = uuid;
 	}
+	
+	public static Usuario instaceOf(Long id, String uuid, String email) {
+		Usuario usuario = new Usuario();
+		usuario.setId(id).setUuid(uuid).setEmail(email);
+		return usuario;
+	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public Usuario setId(Long id) {
 		this.id = id;
+		return this;
 	}
 
 	public String getUuid() {
 		return uuid;
 	}
 
-	public void setUuid(String uuid) {
+	public Usuario setUuid(String uuid) {
 		this.uuid = uuid;
+		return this;
 	}
 
 	public String getNome() {
@@ -160,5 +168,4 @@ public class Usuario implements Serializable {
 			return false;
 		return true;
 	}
-
 }

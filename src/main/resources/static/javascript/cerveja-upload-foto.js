@@ -48,12 +48,30 @@ Brewer.UploadFoto = (function() {
 		
 		$('.js-remove-foto').on('click', onRemoverFoto.bind(this));
 	}
-	
+
 	function onRemoverFoto(){
 		$('.js-foto-cerveja').remove();
 		this.uploadDrop.removeClass('hidden');
+		$.ajax({
+			url : 'http://localhost:8080/brewer/cervejas/cadastro/foto/remover', //temporario mudar link estatico futuramente
+			method : 'DELETE',
+			contentType : 'application/json',
+			data : JSON.stringify({
+				'nomeFotoJson' : this.inputNomeFoto.val(),
+			}),
+			error : onErrorRemovendoFoto.bind(this),
+			success : onSuccessRemovendoFoto.bind(this)
+		});
 		this.inputNomeFoto.val('');
 		this.inputContentType.val('');
+	}
+	
+	function onErrorRemovendoFoto(){
+		alert('Erro removendo foto');
+	}
+	
+	function onSuccessRemovendoFoto(){
+		alert('Success removendo foto');
 	}
 	
 	return UploadFoto

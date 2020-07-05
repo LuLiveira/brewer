@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ import br.com.lucas.brewer.model.Estilo;
 import br.com.lucas.brewer.model.enums.Origem;
 import br.com.lucas.brewer.model.enums.Sabor;
 import br.com.lucas.brewer.model.factory.ModelAndViewFactory;
-import br.com.lucas.brewer.repository.EstiloRepository;
+import br.com.lucas.brewer.repository.filter.CervejaFilter;
 import br.com.lucas.brewer.service.CervejaService;
 import br.com.lucas.brewer.service.exception.CervejaDuplicadaException;
 
@@ -60,12 +61,12 @@ public class CervejaController {
 	@PostMapping(CADASTRO_ENDPOINT)
 	public ModelAndView cadastrarCerveja(@Valid Cerveja cerveja, BindingResult result, RedirectAttributes attributes) {
 
-		if (result.hasErrors()) {
+ 		if (result.hasErrors()) {
 			return carregarCadastro(cerveja);
 		}
 
 		try {
-			this.cervejaService.cadastrarNova(cerveja);
+ 			this.cervejaService.cadastrarNova(cerveja);
 			attributes.addFlashAttribute("mensagem", "Cerveja cadastrada com sucesso! ");
 			return ModelAndViewFactory.instaceOf("redirect:/cervejas/cadastro");
 		} catch (CervejaDuplicadaException e) {
@@ -87,10 +88,16 @@ public class CervejaController {
 	}
 	
 	@GetMapping
-	public ModelAndView pesquisar() {
+	public ModelAndView pesquisar(CervejaFilter cervejaFilter, BindingResult result) {
 		ModelAndView mv = ModelAndViewFactory.instaceOf("cerveja/pesquisa-cerveja");
-		buscarCervejaParaPesquisa(mv);
+		buscarCervejaParaPesquisa(mv, cervejaFilter);
 		return mv;
+	}
+	
+	@DeleteMapping(value = "/cadastro/foto/remover", consumes = { APPLICATION_JSON_VALUE })
+	public ResponseEntity<?> removerFotoCerveja(@RequestBody String nomeFotoJson) {
+		cervejaService.removerImagemTemporariaDaCerveja(nomeFotoJson);
+		return ResponseEntity.ok().build();
 	}
 
 	private void recuperaValoresParaOSelect(ModelAndView mv) {
@@ -99,9 +106,9 @@ public class CervejaController {
 		mv.addObject("origens", Origem.values());
 	}
 	
-	private void buscarCervejaParaPesquisa(ModelAndView mv) {
+	private void buscarCervejaParaPesquisa(ModelAndView mv, CervejaFilter filter) {
 		recuperaValoresParaOSelect(mv);
-		mv.addObject("cervejas", cervejaDAO.selectAll());
+		mv.addObject("cervejas", cervejaDAO.selectByFilter(filter));
 		
 	}
 }
