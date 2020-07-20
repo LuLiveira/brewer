@@ -2,8 +2,11 @@ package br.com.lucas.brewer.controller;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import br.com.lucas.brewer.controller.page.PageWrapper;
 import br.com.lucas.brewer.dao.CervejaDAO;
 import br.com.lucas.brewer.dao.EstiloDAO;
 import br.com.lucas.brewer.model.Cerveja;
@@ -39,12 +43,12 @@ public class CervejaController {
 
 	private final EstiloDAO estiloDAO;
 	private final CervejaDAO cervejaDAO;
-	
+
 	private final CervejaService cervejaService;
-	
-	private final String CADASTRO_ENDPOINT 			= "/cadastro";
-	private final String CADASTRO_ESTILO_ENDPOINT 	= CADASTRO_ENDPOINT + "/estilo";
-	
+
+	private final String CADASTRO_ENDPOINT = "/cadastro";
+	private final String CADASTRO_ESTILO_ENDPOINT = CADASTRO_ENDPOINT + "/estilo";
+
 	public CervejaController(CervejaService cervejaService, EstiloDAO estiloDAO, CervejaDAO cervejaDAO) {
 		this.cervejaService = cervejaService;
 		this.estiloDAO = estiloDAO;
@@ -61,12 +65,12 @@ public class CervejaController {
 	@PostMapping(CADASTRO_ENDPOINT)
 	public ModelAndView cadastrarCerveja(@Valid Cerveja cerveja, BindingResult result, RedirectAttributes attributes) {
 
- 		if (result.hasErrors()) {
+		if (result.hasErrors()) {
 			return carregarCadastro(cerveja);
 		}
 
 		try {
- 			this.cervejaService.cadastrarNova(cerveja);
+			this.cervejaService.cadastrarNova(cerveja);
 			attributes.addFlashAttribute("mensagem", "Cerveja cadastrada com sucesso! ");
 			return ModelAndViewFactory.instaceOf("redirect:/cervejas/cadastro");
 		} catch (CervejaDuplicadaException e) {
@@ -86,14 +90,20 @@ public class CervejaController {
 
 		return ResponseEntity.ok(estilo);
 	}
-	
+
 	@GetMapping
-	public ModelAndView pesquisar(CervejaFilter cervejaFilter, BindingResult result) {
+	public ModelAndView pesquisar(CervejaFilter cervejaFilter, 
+			BindingResult result,
+			@PageableDefault(size = 2) Pageable page,  
+			HttpServletRequest request
+		) {
+		
 		ModelAndView mv = ModelAndViewFactory.instaceOf("cerveja/pesquisa-cerveja");
-		buscarCervejaParaPesquisa(mv, cervejaFilter);
+		recuperaValoresParaOSelect(mv);
+		mv.addObject("cervejas", new PageWrapper<>(cervejaDAO.selectByFilter(cervejaFilter, page), request));
 		return mv;
 	}
-	
+
 	@DeleteMapping(value = "/cadastro/foto/remover", consumes = { APPLICATION_JSON_VALUE })
 	public ResponseEntity<?> removerFotoCerveja(@RequestBody String nomeFotoJson) {
 		cervejaService.removerImagemTemporariaDaCerveja(nomeFotoJson);
@@ -104,11 +114,5 @@ public class CervejaController {
 		mv.addObject("sabores", Sabor.values());
 		mv.addObject("estilos", estiloDAO.selectAll());
 		mv.addObject("origens", Origem.values());
-	}
-	
-	private void buscarCervejaParaPesquisa(ModelAndView mv, CervejaFilter filter) {
-		recuperaValoresParaOSelect(mv);
-		mv.addObject("cervejas", cervejaDAO.selectByFilter(filter));
-		
 	}
 }

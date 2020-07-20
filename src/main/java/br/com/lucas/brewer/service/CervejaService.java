@@ -8,9 +8,7 @@ import javax.transaction.Transactional;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import br.com.lucas.brewer.dao.CervejaDAO;
 import br.com.lucas.brewer.model.Cerveja;
@@ -20,12 +18,11 @@ import br.com.lucas.brewer.service.event.cerveja.CervejaEvent;
 import br.com.lucas.brewer.service.exception.CervejaDuplicadaException;
 import br.com.lucas.brewer.service.exception.FalhaRemovendoFotoTemporariaException;
 import br.com.lucas.brewer.storage.FotoStorageLocal;
-import br.com.lucas.brewer.storage.local.FotoStorageLocalImpl;
 
 @Service
 public class CervejaService {
 
-	@Autowired @Deprecated
+	@SuppressWarnings("unused")	@Autowired @Deprecated
 	private CervejaRepository cervejaRepository;
 	
 	private final CervejaDAO cervejaDAO;

@@ -97,8 +97,22 @@
 					<thead>
 						<tr>
 							<th class="table-cervejas-col-foto">				 </th>
-							<th class="table-cervejas-col-sku" 		th:text="SKU"	/>
-							<th class="table-cervejas-col-nome" 	th:text="Nome"	/>
+							<th class="table-cervejas-col-sku">
+								<a th:href="${cervejas.urlOrdenada('sku')}" th:remove="${#lists.isEmpty(cervejas.content)} ? tag">
+									<span>SKU</span>
+								</a>
+								<span th:remove="${cervejas.descendente('sku')} ? tag" class="dropup" th:if="${not #lists.isEmpty(cervejas.content)} ? tag">
+									<span class="caret"></span>
+								</span>
+							</th>
+							<th class="table-cervejas-col-nome">
+								<a th:href="${cervejas.urlOrdenada('nome')}" th:remove="${#lists.isEmpty(cervejas.content)} ? tag">
+									<span>Nome</span>
+								</a>
+								<span th:remove="${cervejas.descendente('nome')} ? tag" class="dropup" th:if="${not #lists.isEmpty(cervejas.content)} ? tag">
+									<span class="caret"></span>
+								</span>
+							</th>
 							<th class="table-cervejas-col-estilo" 	th:text="Estilo"/>
 							<th class="table-cervejas-col-origem" 	th:text="Origem"/>
 							<th class="table-cervejas-col-valor" 	th:text="Valor"	/>
@@ -106,12 +120,12 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="cerveja : ${cervejas}">
+						<tr th:each="cerveja : ${cervejas.content}">
 							<td class="text-center">
 								<img th:src="@{/fotos/thumbnail.{foto}(foto=${cerveja.fotoOrMock})}" class="img-responsive" alt="miniatura-cerveja"/>
 							</td>
 							<td class="text-center" th:text="${cerveja.sku}"></td>
-							<td class="text-center" th:text="${cerveja.nome}"></td>
+							<td class="text-left"   th:text="${cerveja.nome}"></td>
 							<td class="text-center" th:text="${cerveja.estilo.nome}"></td>
 							<td class="text-center" th:text="${cerveja.origem.descricao}"></td>
 							<td class="text-center" th:text="${cerveja.valor}"></td>
@@ -124,11 +138,35 @@
 								</a>
 							</td>
 						<tr>
-						<tr th:if="${#lists.isEmpty(cervejas)}">
+						<tr th:if="${#lists.isEmpty(cervejas.content)}">
 							<td colspan="7">Nenhuma cerveja encontrada</td>
 						</tr>
 					</tbody>
 				</table>
+			</div>
+			
+			<div class="col-sm-12 text-center" th:if="${not #lists.isEmpty(cervejas.content)}">
+				<nav>
+					<ul class="pagination pagination-sm ">
+						<li th:class="${cervejas.first} ? disabled">
+							<a th:remove="${cervejas.first} ? tag" th:href="${cervejas.urlPagina(cervejas.number - 1)}">
+								<span>&laquo;</span>
+							</a>
+						</li>
+						<th:block th:each="c : ${#numbers.sequence(1,cervejas.totalPages)}" th:with="numeroPagina=${c-1}">
+							<li th:class="${cervejas.number == numeroPagina} ? active ">
+								<a th:href="${cervejas.urlPagina(numeroPagina)}">
+									<span>[[${c}]]</span>
+								</a>
+							</li>
+						</th:block>
+						<li th:class="${cervejas.last} ? disabled">
+							<a th:remove="${cervejas.last} ? tag" th:href="${cervejas.urlPagina(cervejas.number + 1)}">
+								<span>&raquo;</span>
+							</a>
+						</li>
+					</ul>
+				</nav>
 			</div>
 		</div>
 	

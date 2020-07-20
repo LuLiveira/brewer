@@ -2,7 +2,6 @@ package br.com.lucas.brewer.model;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

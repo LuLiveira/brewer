@@ -15,7 +15,7 @@ import br.com.lucas.brewer.service.exception.NomeEstiloJaCadastradoExcetion;
 @Service
 public class EstiloService {
 
-	@Autowired @Deprecated
+	@Autowired @Deprecated 	@SuppressWarnings("unused")
 	private EstiloRepository estiloRepository;
 	
 	@Autowired
