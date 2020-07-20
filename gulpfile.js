@@ -16,7 +16,7 @@ var js_dist_name2 = "estilo.min" + jsExt;
 var js_dist_name3 = "upload-foto.min" + jsExt;
 
 var css_dev  = "./src/main/resources/static/stylesheets/brewer.sass";
-var css_dist = "./src/main/resources/static/stylesheets";
+var css_dist = "./src/main/resources/static/stylesheets/";
 var css_dist_name = "brewer.min.css";
 
 function minifyJS() {
