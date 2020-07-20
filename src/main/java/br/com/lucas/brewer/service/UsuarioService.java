@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import br.com.lucas.brewer.dao.UsuarioDAO;
@@ -21,7 +20,7 @@ public class UsuarioService {
 	private UsuarioDAO usuarioDAO;
 	private ApplicationEventPublisher publisher;
 	
-	@Autowired @Deprecated
+	@Autowired @Deprecated @SuppressWarnings("unused")
 	private Mailer mailer;
 	
 	public UsuarioService(UsuarioDAO usuarioDAO, ApplicationEventPublisher publisher) {
