@@ -24,6 +24,7 @@ import br.com.lucas.brewer.dao.CervejaDAO;
 import br.com.lucas.brewer.dao.EstiloDAO;
 import br.com.lucas.brewer.model.Cerveja;
 import br.com.lucas.brewer.model.Estilo;
+import br.com.lucas.brewer.model.dto.CervejaDTO;
 import br.com.lucas.brewer.model.enums.Origem;
 import br.com.lucas.brewer.model.enums.Sabor;
 import br.com.lucas.brewer.model.factory.ModelAndViewFactory;
@@ -46,8 +47,8 @@ public class CervejaController {
 
 	private final CervejaService cervejaService;
 
-	private final String CADASTRO_ENDPOINT = "/cadastro";
-	private final String CADASTRO_ESTILO_ENDPOINT = CADASTRO_ENDPOINT + "/estilo";
+	private static final String CADASTRO_ENDPOINT = "/cadastro";
+	private static final String CADASTRO_ESTILO_ENDPOINT = CADASTRO_ENDPOINT + "/estilo";
 
 	public CervejaController(CervejaService cervejaService, EstiloDAO estiloDAO, CervejaDAO cervejaDAO) {
 		this.cervejaService = cervejaService;
@@ -56,26 +57,28 @@ public class CervejaController {
 	}
 
 	@GetMapping(CADASTRO_ENDPOINT)
-	public ModelAndView carregarCadastro(Cerveja cerveja) {
+	public ModelAndView carregarCadastro(CervejaDTO cervejaDTO) {
 		ModelAndView mv = ModelAndViewFactory.instaceOf("cerveja/cadastro-cerveja");
 		recuperaValoresParaOSelect(mv);
 		return mv;
 	}
 
 	@PostMapping(CADASTRO_ENDPOINT)
-	public ModelAndView cadastrarCerveja(@Valid Cerveja cerveja, BindingResult result, RedirectAttributes attributes) {
+	public ModelAndView cadastrarCerveja(@Valid CervejaDTO cervejaDTO, BindingResult result, RedirectAttributes attributes) {
 
 		if (result.hasErrors()) {
-			return carregarCadastro(cerveja);
+			return carregarCadastro(cervejaDTO);
 		}
-
+		
+		Cerveja cerveja = cervejaDTO.fromDTOToEntity();
+		
 		try {
 			this.cervejaService.cadastrarNova(cerveja);
 			attributes.addFlashAttribute("mensagem", "Cerveja cadastrada com sucesso! ");
 			return ModelAndViewFactory.instaceOf("redirect:/cervejas/cadastro");
 		} catch (CervejaDuplicadaException e) {
 			result.addError(new ObjectError("cerveja", e.getMessage()));
-			return carregarCadastro(cerveja);
+			return carregarCadastro(cervejaDTO);
 		}
 
 	}

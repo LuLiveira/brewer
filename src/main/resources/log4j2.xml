@@ -7,13 +7,6 @@
         </Console>
     </Appenders>
     <Loggers>
-    	<Logger name="br.com.lucas.brewer.controller" level="debug">
-            <AppenderRef ref="Console"/>
-        </Logger>
-        
-        <Logger name="org.hibernate" level="debug">
-            <AppenderRef ref="Console"/>
-        </Logger>
     
         <Root level="debug" additivity="false">
             <AppenderRef ref="console" />

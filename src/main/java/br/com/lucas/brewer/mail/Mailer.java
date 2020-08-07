@@ -15,7 +15,7 @@ public class Mailer {
 	}
 	
 	@Async
-	public void enviar(String... args) {
+	public void enviar(String... args) { //se não funcionar é por causa do args que deve virar parametros
 		StringBuilder body = new StringBuilder();
 		body.append("O seu código de verificação é: ")
 				.append(args[1])

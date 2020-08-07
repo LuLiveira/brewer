@@ -23,7 +23,7 @@
 		<div class="container-fluid">
 		
 		
-			<form method="POST" th:object="${cerveja}" class="form-vertical  js-form-loading" >
+			<form method="POST" th:object="${cervejaDTO}" class="form-vertical  js-form-loading" >
 				<brewer:message />
 				
 				<div class="row">
@@ -55,7 +55,7 @@
 							
 							<div class="brewer-field-action_icon">
 								<a href="#" data-toggle="modal" data-target="#modal-cadastro-rapido-estilo">
-									<i class="glyphicon glyphicon-plus-sign brewer-glyphicon-large"></i>
+									<em class="glyphicon glyphicon-plus-sign brewer-glyphicon-large"></em> <!-- se der ruim voltar para <i> -->
 								</a>
 							</div>
 						</div>
@@ -66,7 +66,7 @@
 						<select id="sabor" class="form-control" th:field="*{sabor}">
 							<option value="">Selecione o sabor</option>
 							<option th:each="sabor : ${sabores}" 
-									th:value="${sabor}" 
+									th:value="${sabor.valor}" 
 									th:text="${sabor.descricao}"
 							></option> 
 						</select>
@@ -85,7 +85,7 @@
 						<div>
 							<th:block th:each="origem : ${origens}">
 								<div class="radio radio-inline">
-									<input th:id="|id-${origem}|" type="radio" th:value="${origem}" th:field="*{origem}" >
+									<input th:id="|id-${origem}|" type="radio" th:value="${origem.valor}" th:field="*{origem}" >
 									<label th:for="|id-${origem}|" th:text="${origem.descricao}"></label> 
 								</div>
 							</th:block>
@@ -124,7 +124,7 @@
 						
 						<div class="js-container-foto-cerveja" th:attr="data-url-fotos=@{/fotos}">
 							<div class="bw-upload" id="upload-drop">
-								<i class="glyphicon glyphicon-cloud-upload"></i>
+								<em class="glyphicon glyphicon-cloud-upload"></em> <!-- se der ruim voltar para <i> -->
 								<span>Arraste a foto aqui ou </span>
 								<a class="bw-upload-form-file">selecione <input id="upload-select" type="file" accept=".jpg,.jpeg,.png" /> </a>
 							</div>

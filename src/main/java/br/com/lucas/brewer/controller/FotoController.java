@@ -29,7 +29,7 @@ public class FotoController {
 	
 	@PostMapping
 	public DeferredResult<FotoDTO> upload(@RequestParam("files[]") MultipartFile[] files) {
-		DeferredResult<FotoDTO> result = new DeferredResult<FotoDTO>();
+		DeferredResult<FotoDTO> result = new DeferredResult<>();
 		Thread thread = new Thread(new FotoStorageRunnable(files, result, fotoStorage));
 		thread.start();
 		return result;

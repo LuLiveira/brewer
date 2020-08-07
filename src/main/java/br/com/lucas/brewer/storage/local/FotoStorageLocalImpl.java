@@ -26,8 +26,8 @@ import net.coobird.thumbnailator.name.Rename;
 public class FotoStorageLocalImpl implements FotoStorageLocal {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(FotoStorageLocalImpl.class);
-	private final String FOLDER_NAME = "\\.brewerimages";
-	private final String TEMP_FOLDER_NAME = "\\temp";
+	private static final String FOLDER_NAME = "\\.brewerimages";
+	private static final String TEMP_FOLDER_NAME = "\\temp";
 
 	private final String local = System.getProperty("user.home").concat(FOLDER_NAME);
 	private final String localTemporario = local.concat(TEMP_FOLDER_NAME);
@@ -78,7 +78,7 @@ public class FotoStorageLocalImpl implements FotoStorageLocal {
 		try {
 			return Files.readAllBytes(path);
 		} catch (IOException e) {
-			throw new RuntimeException("NÃO FOI POSSÍVEL RECUPERAR A IMAGEM DA CERVEJA.");
+			throw new RuntimeException("NÃO FOI POSSÍVEL RECUPERAR A IMAGEM DA CERVEJA."); // criar excecao personalizada
 		}
 	}
 	
@@ -88,26 +88,25 @@ public class FotoStorageLocalImpl implements FotoStorageLocal {
 		try {
 			return Files.readAllBytes(path);
 		} catch (IOException e) {
-			throw new RuntimeException("NÃO FOI POSSÍVEL RECUPERAR A IMAGEM DA CERVEJA.");
+			throw new RuntimeException("NÃO FOI POSSÍVEL RECUPERAR A IMAGEM DA CERVEJA."); // criar excecao personalizada
 		}
 	}
 
 	private void montaPasta(String path) {
 		File file = new File(path);
 		file.mkdirs();
-		LOGGER.info("DIRETÓRIO: " + path + " CRIADO COM SUCESSO!");
 	}
 
 	private String renomearArquivo(String nomeOriginal) {
-		String novoNome = UUID.randomUUID().toString() + "_" + nomeOriginal;
-		return novoNome;
+		return UUID.randomUUID().toString() + "_" + nomeOriginal;
 	}
 
 	public void removerImagemTemporariaDaCerveja(String foto) throws FalhaRemovendoFotoTemporariaException {
 		File tempPath = new File(this.localTemporario+"\\"+foto);
-		if(tempPath.delete()) {
-			LOGGER.info("A IMAGEM TEMPORARIA "+ foto +" FOI REMOVIDA");
-		}else {
+		try{
+			Files.delete(tempPath.toPath()); //se der erro voltar para if(tempPath.delete())
+			LOGGER.error("A IMAGEM TEMPORARIA {0} FOI REMOVIDA", foto); //verificar se {0} funciona
+		}catch(Exception e) {
 			throw new FalhaRemovendoFotoTemporariaException("Falha removendo foto temporária.");
 		}
 	}

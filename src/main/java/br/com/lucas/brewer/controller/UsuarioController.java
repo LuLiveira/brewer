@@ -19,18 +19,20 @@ import br.com.lucas.brewer.service.exception.UsuarioInvalidoException;
 public class UsuarioController {
 
 	private UsuarioService usuarioService;
+	private static final String URL_VALIDACAO_CADASTRO = "redirect:/usuarios/valida";
+	private static final String USUARIOS_PREFIX = "usuarios";
+	private static final String USUARIO = "usuario";
 	
 	public UsuarioController(UsuarioService usuarioService) {
 		this.usuarioService = usuarioService;
 	}
 
-	@GetMapping("usuarios/cadastro")
+	@GetMapping(USUARIOS_PREFIX+"/cadastro")
 	public ModelAndView carregarCadastro(Usuario usuario) {
-		ModelAndView mv = new ModelAndView( "usuario/cadastro-usuario");
-		return mv;
+		return new ModelAndView( USUARIO+"/cadastro-usuario");
 	}
 	
-	@PostMapping("usuarios/cadastro")
+	@PostMapping(USUARIOS_PREFIX+"/cadastro")
 	public ModelAndView cadastrarUsuario(@Valid Usuario usuario, BindingResult result, RedirectAttributes attributes) {
 
 		if (result.hasErrors()) {
@@ -40,35 +42,31 @@ public class UsuarioController {
 		try {
 			long id = this.usuarioService.cadastrarNovo(usuario);
 			attributes.addAttribute("id", id);
-			return new ModelAndView("redirect:/usuarios/valida");
-		} catch (UsuarioExistsException | UsuarioInvalidoException e) {
-			
-			if(e instanceof UsuarioInvalidoException) {
-				result.addError(new ObjectError("usuario", e.getMessage()));
-				attributes.addAttribute("id", Integer.valueOf(e.getCause().getMessage()));
-				return new ModelAndView("redirect:/usuarios/valida");
-			}
-			
-			result.addError(new ObjectError("usuario", e.getMessage()));
+			return new ModelAndView(URL_VALIDACAO_CADASTRO);
+		} catch (UsuarioExistsException e) {
+			result.addError(new ObjectError(USUARIO, e.getMessage()));
 			return carregarCadastro(usuario);
+		} catch (UsuarioInvalidoException e) {
+			result.addError(new ObjectError(USUARIO, e.getMessage()));
+			attributes.addAttribute("id", Integer.valueOf(e.getCause().getMessage()));
+			return new ModelAndView(URL_VALIDACAO_CADASTRO);
 		}
 	}
 	
-	@GetMapping("usuarios/valida")
+	@GetMapping(USUARIOS_PREFIX+"/valida")
 	public ModelAndView carregarValidacao(Usuario usuario) {
-		ModelAndView mv = new ModelAndView( "usuario/valida-usuario");
-		return mv;
+		return new ModelAndView( USUARIO+"/valida-usuario");
 	}
 	
-	@PostMapping("usuarios/valida")
+	@PostMapping(USUARIOS_PREFIX+"/valida")
 	public ModelAndView validarUsuario(Usuario usuario, BindingResult result, RedirectAttributes attributes) {
 
 		try {
 			usuarioService.validaUsuario(usuario);
 			attributes.addFlashAttribute("mensagem", "Usuário ativado com sucesso! ");
-			return new ModelAndView("redirect:/usuarios/valida");
+			return new ModelAndView(URL_VALIDACAO_CADASTRO);
 		} catch (UsuarioInvalidoException | IllegalArgumentException e) {
-			result.addError(new ObjectError("usuario", e.getMessage()));
+			result.addError(new ObjectError(USUARIO, e.getMessage()));
 			return carregarValidacao(usuario);
 		}
 		

@@ -13,13 +13,11 @@ public class SocketController {
 
 	@GetMapping
 	public ModelAndView webSocket() {
-		ModelAndView model = ModelAndViewFactory.instaceOf("cerveja/websocket");
-		return model;
+		return ModelAndViewFactory.instaceOf("cerveja/websocket");
 	}
 	
 	@GetMapping(value = "/2")
 	public ModelAndView webSocket2() {
-		ModelAndView model = ModelAndViewFactory.instaceOf("cerveja/websocket2");
-		return model;
+		return ModelAndViewFactory.instaceOf("cerveja/websocket2");
 	}
 }

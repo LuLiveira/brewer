@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+	
+	<th:block th:fragment="order (cervejas, propriedade, texto)">
+		<a th:href="${cervejas.urlOrdenada(propriedade)}"
+			th:remove="${#lists.isEmpty(cervejas.content)} ? tag"> 
+			<span th:text="${texto}"></span>
+		</a>
+		<span th:remove="${cervejas.descendente(propriedade)} ? tag"
+			class="dropup" th:if="${not #lists.isEmpty(cervejas.content)} ? tag">
+			<span class="caret"></span>
+		</span>
+	</th:block>
+	
+</html>

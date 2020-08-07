@@ -2,7 +2,6 @@ package br.com.lucas.brewer.config;
 
 import java.util.Properties;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -18,16 +17,13 @@ import br.com.lucas.brewer.mail.Mailer;
 @PropertySource("classpath:mail.properties")
 public class MailConfig {
 
-	@Autowired
-	Environment environment;
-
-	private final String SMTP 		= "mail.smtp";
-	private final String PORT 		= "mail.port";
-	private final String USERNAME 	= "mail.username";
-	private final String PASSWORD 	= "mail.password";
+	private static final String SMTP 		= "mail.smtp";
+	private static final String PORT 		= "mail.port";
+	private static final String USERNAME 	= "mail.username";
+	private static final String PASSWORD 	= "mail.password";
 
 	@Bean
-	public JavaMailSender mailSender() {
+	public JavaMailSender mailSender(Environment environment) {
 		JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
 		mailSender.setHost(environment.getProperty(SMTP));
 		mailSender.setPort(Integer.valueOf(environment.getProperty(PORT)));

@@ -121,7 +121,7 @@ public class PageWrapper<T> implements Page<T> {
 	public String inverterDirecao(String propriedade) {
 		String direcao = "asc";
 
-		Order order = page.getSort() != null ? page.getSort().getOrderFor(propriedade) : null;
+		Order order = page.getSort().getOrderFor(propriedade); // se der erro voltar ternario verificando se sort n é null
 		if (order != null) {
 			direcao = Sort.Direction.ASC.equals(order.getDirection()) ? "desc" : "asc";
 		}
@@ -134,15 +134,14 @@ public class PageWrapper<T> implements Page<T> {
 	}
 	
 	/***
-	 * Método para não exibir os icones cima/baixo ao lado do SKU e NOME para quando não existe ordenação (logo que entra na pagina /cervejas)
+	 * @deprecated (Método para não exibir os icones cima/baixo ao lado do SKU e NOME para quando não existe ordenação (logo que entra na pagina /cervejas))
 	 * @param propriedade
 	 * @return
 	 */
 	@Deprecated
 	public boolean ordenada(String propriedade) {
-		Order order = page.getSort() != null ? page.getSort().getOrderFor(propriedade) : null;
-		
-		return order == null ? true : page.getSort().getOrderFor(propriedade) != null ? true : false;
+		Order order = page.getSort().getOrderFor(propriedade);
+		return order == null && page.getSort().getOrderFor(propriedade) != null;
 	}
 
 }

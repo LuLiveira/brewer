@@ -14,18 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.springframework.util.StringUtils;
 
 import br.com.lucas.brewer.model.enums.Origem;
 import br.com.lucas.brewer.model.enums.Sabor;
-import br.com.validation.SKUValidation;
 
 @Entity
 @Table(name = "cerveja")
@@ -35,60 +28,36 @@ public class Cerveja implements Serializable {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	private Long id;
-
-	@SKUValidation
-	@NotBlank(message = "O SKU é obrigatório")
 	private String sku;
-
-	@NotBlank(message = "O nome é obrigatório")
 	private String nome;
-
-	@Size(max = 50, message = "Descrição deve conter até 50 caracteres")
 	private String descricao;
-
-	@DecimalMin(value = "0.01")
-	@DecimalMax(value = "9999999.99", message = "O valor da cerveja deve ser menor que R$9.999.999,99")
-	@NotNull(message = "O valor é obrigatório")
 	private BigDecimal valor;
-
+	
 	@Column(name = "teor_alcoolico")
-	@NotNull(message = "O teor alcóolico é obrigatório")
-	@DecimalMax(value = "100.0", message = "O valor do teor alcóolico deve ser menor que 100")
 	private BigDecimal teorAlcoolico;
-
-	@NotNull(message = "A comissão é obrigatóira")
-	@DecimalMax(value = "100.0", message = "A comissão deve ser igual ou menor que 100")
 	private BigDecimal comissao;
-
-	@NotNull(message = "A quantidade em estoque é obrigatória")
-	@Max(value = 9999, message = "A quantidade em estoque deve ser menor que 9.999")
+	
 	@Column(name = "quantidade_estoque")
 	private Integer quantidadeEstoque;
-
-	@NotNull(message = "A origem é obrigatória")
+	
 	@Enumerated(STRING)
 	private Origem origem;
-
-	@NotNull(message = "O sabor é obrigatório")
 	@Enumerated(STRING)
 	private Sabor sabor;
-
-	@NotNull(message = "O estilo é obrigatório")
+	
 	@ManyToOne
 	@JoinColumn(name = "id_estilo")
 	private Estilo estilo;
-
 	private String foto;
-
+	
 	@Column(name = "content_type")
 	private String contentType;
 	
 	public Cerveja() {}
 
-	public Cerveja(long id, String sku, String nome, String descricao, BigDecimal valor,
+	public Cerveja(String sku, String nome, String descricao, BigDecimal valor,
 			BigDecimal teorAlcoolico, BigDecimal comissao, int quantidadeEstoque, String origem, String sabor, Estilo estilo,
 			String foto, String contentType) {
-				this.id = id;
 				this.sku = sku;
 				this.nome = nome;
 				this.descricao = descricao;

@@ -8,6 +8,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import br.com.lucas.brewer.config.JDBCConfig;
+import br.com.lucas.brewer.config.JPAConfig;
 import br.com.lucas.brewer.config.MailConfig;
 import br.com.lucas.brewer.config.ServiceConfig;
 import br.com.lucas.brewer.config.WebConfig;
@@ -16,7 +17,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] { JDBCConfig.class, ServiceConfig.class };
+		return new Class<?>[] { JDBCConfig.class, JPAConfig.class, ServiceConfig.class };
 	}
 
 	@Override

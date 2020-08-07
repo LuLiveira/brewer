@@ -7,11 +7,11 @@ import javax.sql.DataSource;
 
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -53,13 +53,17 @@ public class CervejaDAOImpl implements CervejaDAO {
 	}
 
 	@Override
-	public Optional<List<String>> findCervejaBySku(String sku) {
+	public Optional<String> findCervejaBySku(String sku) {
 		StringBuilder query = new StringBuilder();
 		query.append(" SELECT sku FROM cerveja WHERE sku = ? ");
 
-		List<String> skuExists = jdbcTemplate.query(query.toString(), new Object[] { sku },
-				(rs, rowNumber) -> rs.getString("sku"));
-		return Optional.ofNullable(skuExists);
+		try {
+			String skuExists = jdbcTemplate.queryForObject(query.toString(), new Object[] { sku },
+					(rs, rowNumber) -> rs.getString("sku"));
+			return Optional.ofNullable(skuExists);
+		}catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
 	}
 
 	@Override
@@ -69,7 +73,6 @@ public class CervejaDAOImpl implements CervejaDAO {
 
 		return jdbcTemplate.query(query.toString(),
 				(rs, rowNumber) -> new Cerveja(
-						rs.getLong("id"), 
 						rs.getString("sku"), 
 						rs.getString("nome"),
 						rs.getString("descricao"), 
@@ -106,7 +109,6 @@ public class CervejaDAOImpl implements CervejaDAO {
 
 		List<Cerveja> cervejaList = jdbcTemplate.query(query.toString(), filtro,
 				(rs, rowNumber) -> new Cerveja(
-						rs.getLong("id"), 
 						rs.getString("sku"),
 						rs.getString("nome"),
 						rs.getString("descricao"), 
@@ -125,7 +127,7 @@ public class CervejaDAOImpl implements CervejaDAO {
 
 	private void orderBy(Pageable page, StringBuilder query) {
 		Sort sort = page.getSort();
-		if(sort != null && !sort.isUnsorted()) {
+		if(!sort.isUnsorted()) {
 			Sort.Order order = sort.iterator().next();
 			String campo  	 = order.getProperty();
 			query.append(String.format(" order by %s ", order.isAscending() ? Order.asc(campo) : Order.desc(campo)));
@@ -144,7 +146,7 @@ public class CervejaDAOImpl implements CervejaDAO {
 	}
 
 	private Object[] filterByParams(CervejaFilter filter, StringBuilder query) {
-		Object filtro[] = new Object[7];
+		Object[] filtro = new Object[7];
 
 		if (!StringUtils.isEmpty(filter.getSku())) {
 			query.append(" c.sku like ? ");

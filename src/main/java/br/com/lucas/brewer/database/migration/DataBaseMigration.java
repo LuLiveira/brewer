@@ -1,7 +1,6 @@
 package br.com.lucas.brewer.database.migration;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Properties;
 
 import org.flywaydb.core.Flyway;
@@ -39,16 +38,13 @@ public class DataBaseMigration {
 	}
 
 	private static Properties carregaDadosDo(String databaseProperties){
-		FileInputStream fis = null;
 
-		try {
-			fis = new FileInputStream(databaseProperties);
+		try(FileInputStream fis = new FileInputStream(databaseProperties)) {
 			properties = new Properties();
 			properties.load(fis);
-			fis.close();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			LOG.error("\n" + e.getMessage() + "\n NÃO FOI POSSÍVEL REALIZAR A MIGRATION.");
+			LOG.error(String.format(" %s NÃO FOI POSSÍVEL REALIZAR A MIGRATION.", e.getMessage()));
 		}
 		
 		return properties;

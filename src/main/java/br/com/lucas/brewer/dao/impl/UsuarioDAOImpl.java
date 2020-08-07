@@ -29,7 +29,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		query.append(" INSERT INTO usuario ").append(" (uuid, nome, email, senha ) ").append(" values ( ?, ?, ?, ? ) ");
 
 		jdbcTemplate.update(query.toString(), // query
-				usuario.getUuid().toString(), usuario.getNome(), usuario.getEmail(), usuario.getSenha());
+				usuario.getUuid(), usuario.getNome(), usuario.getEmail(), usuario.getSenha());
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 
 		jdbcTemplate.update((con) -> {
 			PreparedStatement statement = con.prepareStatement(query.toString(), Statement.RETURN_GENERATED_KEYS);
-			statement.setString(1, usuario.getUuid().toString());
+			statement.setString(1, usuario.getUuid()); //se der erro voltar o .toString()
 			statement.setString(2, usuario.getNome());
 			statement.setString(3, usuario.getEmail());
 			statement.setString(4, usuario.getSenha());
@@ -50,9 +50,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			return statement;
 		}, holder);
 
-		long primaryKey = holder.getKey().longValue();
-
-		return primaryKey;
+		return holder.getKey().longValue();
 	}
 
 	@Override

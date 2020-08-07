@@ -1,5 +1,7 @@
 package br.com.lucas.brewer.config;
 
+import static org.springframework.orm.jpa.vendor.Database.MYSQL;
+
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
@@ -10,7 +12,6 @@ import org.springframework.jdbc.datasource.lookup.JndiDataSourceLookup;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -24,7 +25,6 @@ import br.com.lucas.brewer.repository.CervejaRepository;
  *
  */
 
-@Deprecated
 @Configuration
 @EnableJpaRepositories(basePackageClasses = CervejaRepository.class, enableDefaultTransactions = false)
 @EnableTransactionManagement
@@ -40,7 +40,7 @@ public class JPAConfig {
 	@Bean
 	public JpaVendorAdapter jpaVendorAdapter() {
 		HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-		adapter.setDatabase(Database.MYSQL);
+		adapter.setDatabase(MYSQL);
 		adapter.setShowSql(false);
 		adapter.setGenerateDdl(false);
 		adapter.setDatabasePlatform("org.hibernate.dialect.MySQLDialect");

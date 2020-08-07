@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="paginacao (page)">
+	<div class="col-sm-12 text-center"
+		th:if="${not #lists.isEmpty(page.content)}">
+		<nav>
+			<ul class="pagination pagination-sm ">
+				<li th:class="${page.first} ? disabled"><a
+					th:remove="${page.first} ? tag"
+					th:href="${page.urlPagina(page.number - 1)}"> <span>&laquo;</span>
+				</a></li>
+				<th:block th:each="c : ${#numbers.sequence(1,page.totalPages)}"
+					th:with="numeroPagina=${c-1}">
+					<li th:class="${page.number == numeroPagina} ? active "><a
+						th:href="${page.urlPagina(numeroPagina)}"> <span>[[${c}]]</span>
+					</a></li>
+				</th:block>
+				<li th:class="${page.last} ? disabled"><a
+					th:remove="${page.last} ? tag"
+					th:href="${page.urlPagina(page.number + 1)}"> <span>&raquo;</span>
+				</a></li>
+			</ul>
+		</nav>
+	</div>
+</th:block>
+
+</html>
