@@ -44,7 +44,7 @@ public class CervejaService {
 			throw new CervejaDuplicadaException("Já existe uma cerveja cadastrada com este SKU.");
 		}
 		
-		cervejaDAO.insertCerveja(cerveja);
+		cervejaDAO.insert(cerveja);
 		
 		publisher.publishEvent(new CervejaEvent(cerveja));
 	}

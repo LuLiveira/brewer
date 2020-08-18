@@ -25,6 +25,9 @@ import br.com.lucas.brewer.repository.filter.CervejaFilter;
 @Component
 public class CervejaDAOImpl implements CervejaDAO {
 
+	private static final String INSERT_QUERY = " INSERT INTO cerveja (sku, nome, descricao, valor, teor_alcoolico, comissao, sabor, origem, id_estilo, quantidade_estoque, foto)  values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ";
+		
+	
 	JdbcTemplate jdbcTemplate;
 
 	@Autowired //verificar necessidade da annotation
@@ -33,13 +36,10 @@ public class CervejaDAOImpl implements CervejaDAO {
 	}
 
 	@Override
-	public void insertCerveja(Cerveja cerveja) {
-		StringBuilder query = new StringBuilder();
-		query.append(" INSERT INTO cerveja ")
-			.append(" (sku, nome, descricao, valor, teor_alcoolico, comissao, sabor, origem, id_estilo, quantidade_estoque, foto) ")
-			.append(" values ( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ) ");
+	public void insert(Cerveja cerveja) {
+		
 
-		jdbcTemplate.update(query.toString(), // query
+		jdbcTemplate.update(INSERT_QUERY, // 
 				cerveja.getSku(), cerveja.getNome(), 
 				cerveja.getDescricao(), 
 				cerveja.getValor(),
@@ -194,5 +194,15 @@ public class CervejaDAOImpl implements CervejaDAO {
 		}
 		
 		return filtro;
+	}
+
+	@Override
+	public Cerveja insertAndReturn(Cerveja estilo) {
+		return null; //Implementar
+	}
+
+	@Override
+	public Cerveja selectById(Long id) {
+		return null; //Implementar
 	}
 }

@@ -52,7 +52,7 @@ public class EstiloDAOImpl implements EstiloDAO {
 
 		long primaryKey = holder.getKey().longValue();
 
-		return selectEstiloById(primaryKey);
+		return selectById(primaryKey);
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class EstiloDAOImpl implements EstiloDAO {
 	}
 
 	@Override
-	public Estilo selectEstiloById(Long id) {
+	public Estilo selectById(Long id) {
 		StringBuilder query = new StringBuilder();
 		query.append(" SELECT * FROM estilo WHERE id = ? ");
 

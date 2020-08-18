@@ -46,9 +46,21 @@ public class CervejaController {
 	private final CervejaDAO cervejaDAO;
 
 	private final CervejaService cervejaService;
+	
+	private static final String CERVEJA  = "cerveja";
 
-	private static final String CADASTRO_ENDPOINT = "/cadastro";
+	private static final String CERVEJAS = "cervejas";
+	private static final String SABORES  = "sabores";
+	private static final String ESTILOS  = "estilos";
+	private static final String ORIGENS  = "origens";
+	
+	private static final String CADASTRO_ENDPOINT		 = "/cadastro";
 	private static final String CADASTRO_ESTILO_ENDPOINT = CADASTRO_ENDPOINT + "/estilo";
+	private static final String CADASTRO_FOTO_REMOVER 	 = CADASTRO_ENDPOINT + "/foto/remover";
+	private static final String CADASTRO_CERVEJA_VIEW	 = "cerveja/cadastro-cerveja";
+	private static final String CADASTRO_CERVEJA_VIEW_REDIRECT = "redirect:/cervejas/cadastro";
+	
+	private static final String PESQUISA_CERVEJA_VIEW = "cerveja/pesquisa-cerveja";
 
 	public CervejaController(CervejaService cervejaService, EstiloDAO estiloDAO, CervejaDAO cervejaDAO) {
 		this.cervejaService = cervejaService;
@@ -58,7 +70,7 @@ public class CervejaController {
 
 	@GetMapping(CADASTRO_ENDPOINT)
 	public ModelAndView carregarCadastro(CervejaDTO cervejaDTO) {
-		ModelAndView mv = ModelAndViewFactory.instaceOf("cerveja/cadastro-cerveja");
+		ModelAndView mv = ModelAndViewFactory.instaceOf(CADASTRO_CERVEJA_VIEW);
 		recuperaValoresParaOSelect(mv);
 		return mv;
 	}
@@ -75,9 +87,9 @@ public class CervejaController {
 		try {
 			this.cervejaService.cadastrarNova(cerveja);
 			attributes.addFlashAttribute("mensagem", "Cerveja cadastrada com sucesso! ");
-			return ModelAndViewFactory.instaceOf("redirect:/cervejas/cadastro");
+			return ModelAndViewFactory.instaceOf(CADASTRO_CERVEJA_VIEW_REDIRECT);
 		} catch (CervejaDuplicadaException e) {
-			result.addError(new ObjectError("cerveja", e.getMessage()));
+			result.addError(new ObjectError(CERVEJA, e.getMessage()));
 			return carregarCadastro(cervejaDTO);
 		}
 
@@ -101,21 +113,21 @@ public class CervejaController {
 			HttpServletRequest request
 		) {
 		
-		ModelAndView mv = ModelAndViewFactory.instaceOf("cerveja/pesquisa-cerveja");
+		ModelAndView mv = ModelAndViewFactory.instaceOf(PESQUISA_CERVEJA_VIEW);
 		recuperaValoresParaOSelect(mv);
-		mv.addObject("cervejas", new PageWrapper<>(cervejaDAO.selectByFilter(cervejaFilter, page), request));
+		mv.addObject(CERVEJAS, new PageWrapper<>(cervejaDAO.selectByFilter(cervejaFilter, page), request));
 		return mv;
 	}
 
-	@DeleteMapping(value = "/cadastro/foto/remover", consumes = { APPLICATION_JSON_VALUE })
+	@DeleteMapping(value = CADASTRO_FOTO_REMOVER, consumes = { APPLICATION_JSON_VALUE })
 	public ResponseEntity<?> removerFotoCerveja(@RequestBody String nomeFotoJson) {
 		cervejaService.removerImagemTemporariaDaCerveja(nomeFotoJson);
 		return ResponseEntity.ok().build();
 	}
 
 	private void recuperaValoresParaOSelect(ModelAndView mv) {
-		mv.addObject("sabores", Sabor.values());
-		mv.addObject("estilos", estiloDAO.selectAll());
-		mv.addObject("origens", Origem.values());
+		mv.addObject(SABORES, Sabor.values());
+		mv.addObject(ESTILOS, estiloDAO.selectAll());
+		mv.addObject(ORIGENS, Origem.values());
 	}
 }
