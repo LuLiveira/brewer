@@ -19,7 +19,7 @@
 		<mysql-connector-java.version>8.0.18</mysql-connector-java.version>
 
 		<!-- SPRING MVC -->
-		<spring-framework.version>5.2.5.RELEASE</spring-framework.version>
+		<spring-framework.version>5.2.9.RELEASE</spring-framework.version>
 
 		<!-- SERVLET API -->
 		<servlet.version>3.1.0</servlet.version>
