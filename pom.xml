@@ -16,7 +16,7 @@
 		<java.version>1.8</java.version>
 		<maven-compiler-plugin.version>3.2</maven-compiler-plugin.version>
 		<flyway-maven-plugin>6.4.2</flyway-maven-plugin>
-		<mysql-connector-java.version>8.0.18</mysql-connector-java.version>
+		<mysql-connector-java.version>8.0.28</mysql-connector-java.version>
 
 		<!-- SPRING MVC -->
 		<spring-framework.version>5.2.5.RELEASE</spring-framework.version>
